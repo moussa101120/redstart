@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.23.5"
+__generated_with = "0.20.4"
 app = marimo.App()
 
 
@@ -1087,23 +1087,90 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ### 🔓 Solution
+    ### Réponse
 
-    At an equilibrium all time-derivatives vanish: $\dot{x}=\dot{y}=\dot{\theta}=0$ and $\ddot{x}=\ddot{y}=\ddot{\theta}=0$.
+    Un équilibre correspond à une situation où le booster ne bouge pas et où son état ne change plus avec le temps.
+    L'état du booster est
+    \[
+    s = (x, v_x, y, v_y, \theta, \omega)
+    \]
+    avec
+    \[
+    v_x = \dot{x}, \qquad v_y = \dot{y}, \qquad \omega = \dot{\theta}.
+    \]
+    À l'équilibre, toutes les dérivées sont nulles. Donc :
+    \[
+    v_x = 0, \qquad v_y = 0, \qquad \omega = 0,
+    \]
+    mais aussi
+    \[
+    \ddot{x} = 0, \qquad \ddot{y} = 0, \qquad \ddot{\theta} = 0.
+    \]
 
-    From the angular equation $J\ddot{\theta} = -f(\ell/2)\sin\phi = 0$ and $f>0$:
+    D'après les équations du modèle,
+    \[
+    \ddot{x} = -\frac{f}{M}\sin(\theta+\phi),
+    \]
+    \[
+    \ddot{y} = \frac{f}{M}\cos(\theta+\phi)-g,
+    \]
 
-    $$\sin\phi = 0 \implies \phi = 0 \quad (\text{given }|\phi|<\pi/2).$$
+    et
+    \[
+    \ddot{\theta} = -\frac{f}{J}\frac{\ell}{2}\sin(\phi).
+    \]
+    Comme on suppose que \(f>0\), la condition \(\ddot{\theta}=0\) impose
+    \[
+    \sin(\phi)=0.
+    \]
+    Or on suppose aussi que
+    \[
+    |\phi| < \frac{\pi}{2}.
+    \]
+    Donc :
+    \[
+    \phi = 0.
+    \]
+    Ensuite, la condition \(\ddot{x}=0\) donne
+    \[
+    \sin(\theta+\phi)=0.
+    \]
+    Comme \(\phi=0\), on obtient
+    \[
+    \sin(\theta)=0.
+    \]
+    Et comme
+    \[
+    |\theta| < \frac{\pi}{2},
+    \]
+    on obtient
+    \[
+    \theta = 0.
+    \]
+    Enfin, la condition \(\ddot{y}=0\) donne
+    \[
+    \frac{f}{M}\cos(0)-g = 0.
+    \]
+    Donc
+    \[
+    \frac{f}{M}=g,
+    \]
+    c-à-d
+    \[
+    f = Mg.
+    \]
+    Ainsi, les équilibres possibles sont les états de la forme
+    \[
+    s_{\text{eq}} = (x_{\text{eq}}, 0, y_{\text{eq}}, 0, 0, 0),
+    \]
+    avec les entrées constantes
+    \[
+    f_{\text{eq}} = Mg,
+    \qquad
+    \phi_{\text{eq}} = 0.
+    \]
 
-    From the horizontal equation $M\ddot{x} = -f\sin(\theta+\phi) = -f\sin\theta = 0$ and $f>0$:
-
-    $$\sin\theta = 0 \implies \theta = 0 \quad (\text{given }|\theta|<\pi/2).$$
-
-    From the vertical equation $M\ddot{y} = f\cos(0) - Mg = f - Mg = 0$:
-
-    $$f = Mg.$$
-
-    So the equilibria are all states $(x_e, 0, y_e, 0, 0, 0)$ for any $(x_e, y_e)$, with inputs $f = Mg$ and $\phi = 0$: the booster is stationary and perfectly upright, with thrust exactly balancing gravity.
+    Conclusion : le booster est vertical, immobile, sans rotation, et la poussée du moteur compense exactement son poids. Les positions \(x_{\text{eq}}\) et \(y_{\text{eq}}\) peuvent être quelconques dans ce modèle, car on cherche seulement un équilibre dynamique.
     """)
     return
 
@@ -1122,25 +1189,144 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ### 🔓 Solution
+    ### Réponse
 
-    Let $\theta = \Delta\theta$, $\phi = \Delta\phi$, $f = Mg + \Delta f$ with all $\Delta$-quantities small. Expanding to first order (using $\sin\varepsilon \approx \varepsilon$, $\cos\varepsilon \approx 1$ for small $\varepsilon$):
+    On se place autour de l'équilibre trouvé juste avant. À l'équilibre, le booster est vertical, immobile, et la poussée compense exactement le poids :
 
-    **Horizontal:** $M\Delta\ddot{x} = -(Mg+\Delta f)\sin(\Delta\theta+\Delta\phi) \approx -Mg(\Delta\theta + \Delta\phi)$
-
-    **Vertical:** $M\Delta\ddot{y} = (Mg+\Delta f)\cos(\Delta\theta+\Delta\phi) - Mg \approx \Delta f$
-
-    **Angular:** $J\Delta\ddot{\theta} = -(Mg+\Delta f)(\ell/2)\sin(\Delta\phi) \approx -Mg(\ell/2)\Delta\phi$
-
-    Summarizing:
-
-    \begin{align*}
-    \Delta\ddot{x} &= -g(\Delta\theta + \Delta\phi) \\
-    \Delta\ddot{y} &= \tfrac{1}{M}\Delta f \\
-    \Delta\ddot{\theta} &= -\tfrac{Mg\ell}{2J}\,\Delta\phi
-    \end{align*}
+    \[
+    \theta_{\text{eq}} = 0,
+    \qquad
+    \phi_{\text{eq}} = 0,
+    \qquad
+    f_{\text{eq}} = Mg.
+    \]
+    Comme on vient d'indiquer , les positions \(x_{\text{eq}}\) et \(y_{\text{eq}}\) peuvent être quelconques, car ce qui compte ici est surtout le mouvement autour de cette position.
+    On introduit donc les variables d'erreur :
+    \[
+    \Delta x = x - x_{\text{eq}},
+    \qquad
+    \Delta y = y - y_{\text{eq}},
+    \qquad
+    \Delta \theta = \theta - 0 = \theta,
+    \]
+    et aussi pour les vitesses :
+    \[
+    \Delta v_x = v_x,
+    \qquad
+    \Delta v_y = v_y,
+    \qquad
+    \Delta \omega = \omega.
+    \]
+    Pour les commandes, on écrit :\[
+    \Delta f = f - Mg,
+    \qquad
+    \Delta \phi = \phi.
+    \]
+    L'idée de la linéarisation est de dire que près de l'équilibre, les angles sont petits. On peut donc utiliser les approximations :
+    \[
+    \sin(\Delta \theta + \Delta \phi) \approx \Delta \theta + \Delta \phi,
+    \]
+    \[
+    \cos(\Delta \theta + \Delta \phi) \approx 1,
+    \]
+    \[
+    \sin(\Delta \phi) \approx \Delta \phi.
+    \]
+    On part des équations non linéaires :
+    \[
+    \ddot{x} = -\frac{f}{M}\sin(\theta+\phi),
+    \]
+    \[
+    \ddot{y} = \frac{f}{M}\cos(\theta+\phi)-g,
+    \]
+    \[
+    \ddot{\theta} =
+    -\frac{f}{J}\frac{\ell}{2}\sin(\phi).
+    \]
+    Comme \(f = Mg + \Delta f\), on obtient au premier ordre :
+    \[
+    \Delta \ddot{x}
+    \approx
+    -g\Delta \theta - g\Delta \phi.
+    \]
+    Pour la verticale :
+    \[
+    \Delta \ddot{y}
+    \approx
+    \frac{\Delta f}{M}.
+    \]
+    Pour la rotation :
+    \[
+    \Delta \ddot{\theta}
+    \approx
+    -\frac{Mg}{J}\frac{\ell}{2}\Delta \phi.
+    \]
+    Donc le modèle linéarisé est :
+    \[
+    \Delta \dot{x} = \Delta v_x,
+    \]
+    \[
+    \Delta \dot{v}_x = -g\Delta \theta - g\Delta \phi,
+    \]
+    \[
+    \Delta \dot{y} = \Delta v_y,
+    \]
+    \[
+    \Delta \dot{v}_y = \frac{\Delta f}{M},
+    \]
+    \[
+    \Delta \dot{\theta} = \Delta \omega,
+    \]
+    \[
+    \Delta \dot{\omega}
+    =
+    -\frac{Mg\ell}{2J}\Delta \phi.
+    \]
+    Avec les valeurs : \(M=1\), \(g=1\), \(\ell=2\), et \(J=1/3\), on a :
+    \[
+    \frac{Mg\ell}{2J} = 3.
+    \]
+    Donc ici :
+    \[
+    \Delta \dot{\omega} = -3\Delta \phi.
+    \]
+    Physiquement, ça veut dire que \(\Delta f\) sert surtout à contrôler le mouvement vertical, alors que \(\Delta \phi\) agit sur la rotation du booster, et donc indirectement sur le mouvement horizontal.
     """)
     return
+
+
+@app.cell
+def _(J, M, g, l, np):
+    rotation_gain = M * g * l / (2 * J)
+
+    def linearized_model(delta_state, delta_input):
+        """
+        delta_state = [Delta x, Delta vx, Delta y, Delta vy, Delta theta, Delta omega]
+        delta_input = [Delta f, Delta phi]
+        """
+        delta_x, delta_vx, delta_y, delta_vy, delta_theta, delta_omega = delta_state
+        delta_f, delta_phi = delta_input
+
+        d_delta_x = delta_vx
+        d_delta_vx = -g * delta_theta - g * delta_phi
+
+        d_delta_y = delta_vy
+        d_delta_vy = delta_f / M
+
+        d_delta_theta = delta_omega
+        d_delta_omega = -rotation_gain * delta_phi
+
+        return np.array([
+            d_delta_x,
+            d_delta_vx,
+            d_delta_y,
+            d_delta_vy,
+            d_delta_theta,
+            d_delta_omega,
+        ])
+
+    print(rotation_gain)
+    return (rotation_gain,)
 
 
 @app.cell(hide_code=True)
@@ -1157,54 +1343,64 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ### 🔓 Solution
-
-    With state $\xi = (\Delta x, \Delta\dot{x}, \Delta y, \Delta\dot{y}, \Delta\theta, \Delta\dot{\theta})$ and input $u = (\Delta f, \Delta\phi)$, the system $\dot{\xi} = A\xi + Bu$ has:
-
-    $$
-    A = \begin{bmatrix}
-    0 & 1 & 0 & 0 &  0 & 0 \\
-    0 & 0 & 0 & 0 & -g & 0 \\
-    0 & 0 & 0 & 1 &  0 & 0 \\
-    0 & 0 & 0 & 0 &  0 & 0 \\
-    0 & 0 & 0 & 0 &  0 & 1 \\
-    0 & 0 & 0 & 0 &  0 & 0
-    \end{bmatrix}, \qquad
-    B = \begin{bmatrix}
-    0   & 0 \\
-    0   & -g \\
-    0   & 0 \\
-    1/M & 0 \\
-    0   & 0 \\
-    0   & -Mg\ell/(2J)
-    \end{bmatrix}
-    $$
+    ### Réponse 1.
+    On écrit le modèle linéarisé sous la forme standard :
+    \[
+    \Delta \dot{s} = A\Delta s + B\Delta u.
+    \]
+    On prend comme état :
+    \[
+    \Delta s =
+    (\Delta x,\Delta v_x,\Delta y,\Delta v_y,\Delta \theta,\Delta \omega)
+    \]
+    et comme commande :
+    \[
+    \Delta u = (\Delta f,\Delta \phi).
+    \]
+    D'après le modèle linéarisé :
+    \[
+    \Delta \dot{x} = \Delta v_x,
+    \qquad
+    \Delta \dot{v}_x = -g\Delta\theta - g\Delta\phi,
+    \]
+    \[
+    \Delta \dot{y} = \Delta v_y,
+    \qquad
+    \Delta \dot{v}_y = \frac{\Delta f}{M},
+    \]
+    \[
+    \Delta \dot{\theta} = \Delta\omega,
+    \qquad
+    \Delta \dot{\omega} = -\frac{Mg\ell}{2J}\Delta\phi.
+    \]
+    Donc la matrice \(A\) regroupe les termes qui dépendent de l'état, et la matrice \(B\) regroupe les termes qui dépendent des commandes.
+    Avec \(g=1\), \(M=1\), \(\ell=2\), et \(J=1/3\), on a :
+    \[
+    \frac{Mg\ell}{2J}=3.
+    \]
     """)
     return
 
 
 @app.cell
-def _(J, M, g, l, np):
+def _(M, g, np, rotation_gain):
     A = np.array([
-        [0, 1, 0, 0,  0,             0],
-        [0, 0, 0, 0, -g,             0],
-        [0, 0, 0, 1,  0,             0],
-        [0, 0, 0, 0,  0,             0],
-        [0, 0, 0, 0,  0,             1],
-        [0, 0, 0, 0,  0,             0],
+        [0, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, -g, 0],
+        [0, 0, 0, 1, 0, 0],
+        [0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 1],
+        [0, 0, 0, 0, 0, 0],
     ], dtype=float)
 
     B = np.array([
-        [0,    0              ],
-        [0,   -g              ],
-        [0,    0              ],
-        [1/M,  0              ],
-        [0,    0              ],
-        [0,   -M*g*l / (2*J) ],
+        [0, 0],
+        [0, -g],
+        [0, 0],
+        [1 / M, 0],
+        [0, 0],
+        [0, -rotation_gain],
     ], dtype=float)
-
-    print("A ="); print(A)
-    print("B ="); print(B)
     return A, B
 
 
@@ -1218,28 +1414,26 @@ def _(mo):
     return
 
 
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""
-    ### 🔓 Solution
-
-    A linear system $\dot{\xi} = A\xi$ is asymptotically stable iff all eigenvalues of $A$ have strictly negative real parts.
-    """)
-    return
-
-
 @app.cell
 def _(A, np):
-    eigenvalues = np.linalg.eigvals(A)
-    print("Eigenvalues of A:", eigenvalues)
-    print("Asymptotically stable:", bool(np.all(np.real(eigenvalues) < 0)))
+    eigenvalues_A = np.linalg.eigvals(A)
+
+    is_asymptotically_stable = np.all(np.real(eigenvalues_A) < 0)
+
+    print("Eigenvalues of A:")
+    print(eigenvalues_A)
+
+    print("Asymptotiquement stable ??", is_asymptotically_stable)
     return
 
 
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    All eigenvalues of $A$ are $0$. Since none have strictly negative real part, the equilibrium is **not asymptotically stable**. A small tilt $\Delta\theta$ causes a constant lateral acceleration $\Delta\ddot{x} = -g\Delta\theta$, producing an unbounded drift in $x$.
+    ### Conclusion
+
+    Les valeurs propres de \(A\) sont nulles. Elles ne sont donc pas strictement négatives.
+    L'équilibre n'est donc pas asymptotiquement stable : si le booster est perturbé, le modèle ne le ramène pas naturellement vers l'équilibre. Il faut ajouter un contrôleur.
     """)
     return
 
@@ -1257,9 +1451,20 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ### 🔓 Solution
+    Pour vérifier si le système linéarisé est contrôlable, on utilise la matrice de contrôlabilité :
 
-    The system $(A, B)$ is controllable iff the controllability matrix $\mathcal{C} = [B,\ AB,\ \ldots,\ A^{n-1}B]$ has rank $n = 6$.
+    \[
+    \mathcal{C} =
+    \begin{bmatrix}
+    B & AB & A^2B & \cdots & A^{n-1}B
+    \end{bmatrix}.
+    \]
+
+    Ici, l'état est de dimension \(n=6\).
+    Le système est contrôlable si le rang de \(\mathcal{C}\) vaut 6.
+
+    Physiquement, \(\Delta f\) agit sur le mouvement vertical \(y\), tandis que \(\Delta \phi\) agit sur la rotation \(\theta\) et donc aussi sur le déplacement horizontal \(x\).
+    c/c : Donc on s'attend à ce que le système complet soit contrôlable.
     """)
     return
 
@@ -1267,18 +1472,29 @@ def _(mo):
 @app.cell
 def _(A, B, np):
     n = A.shape[0]
-    cols = [np.linalg.matrix_power(A, i) @ B for i in range(n)]
-    C_ctrl = np.hstack(cols)
-    rank_ctrl = np.linalg.matrix_rank(C_ctrl)
-    print(f"Rank of controllability matrix: {rank_ctrl}  (n = {n})")
-    print("System is controllable:", rank_ctrl == n)
+
+    controllability_matrix = B
+    for k in range(1, n):
+        controllability_matrix = np.hstack(
+            [controllability_matrix, np.linalg.matrix_power(A, k) @ B]
+        )
+
+    controllability_rank = np.linalg.matrix_rank(controllability_matrix)
+    is_controllable = controllability_rank == n
+
+    print("Rang de la Matrice controllability : ", controllability_rank)
+    print("dimension d'état:", n)
+    print("Controllable?", is_controllable)
     return
 
 
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    The controllability matrix has full rank $6 = n$, so the full linearized system is **controllable**.
+    ### Conclusion:
+    Le rang de la matrice de contrôlabilité est égal à la dimension de l'état, donc le modèle linéarisé complet est contrôlable.
+
+    Cela signifie qu'avec les deux commandes \(\Delta f\) et \(\Delta \phi\), on peut agir sur toutes les variables du modèle linéarisé.
     """)
     return
 
@@ -1300,66 +1516,81 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ### 🔓 Solution
-
-    With the reduced state $\xi_r = (\Delta x, \Delta\dot{x}, \Delta\theta, \Delta\dot{\theta})$ and scalar input $\Delta\phi$, the equations are:
-
-    \begin{align*}
-    \Delta\ddot{x} &= -g\Delta\theta - g\Delta\phi \\
-    \Delta\ddot{\theta} &= -\tfrac{Mg\ell}{2J}\Delta\phi
-    \end{align*}
-
-    giving:
-
-    $$
-    A_r = \begin{bmatrix}
-    0 & 1 &  0 & 0 \\
-    0 & 0 & -g & 0 \\
-    0 & 0 &  0 & 1 \\
-    0 & 0 &  0 & 0
-    \end{bmatrix}, \qquad
-    B_r = \begin{bmatrix}
-    0 \\ -g \\ 0 \\ -Mg\ell/(2J)
-    \end{bmatrix}
-    $$
+    ### Réponse
+    On garde seulement les variables liées au mouvement latéral :
+    \[
+    z =
+    \begin{bmatrix}
+    \Delta x \\
+    \Delta \dot{x} \\
+    \Delta \theta \\
+    \Delta \dot{\theta}
+    \end{bmatrix}\]
+    On fixe la poussée à sa valeur d'équilibre :
+    \[
+    f = Mg\]
+    et on contrôle seulement avec l'angle du moteur :
+    \[
+    u = \Delta \phi.\]
+    Le modèle réduit devient :
+    \[
+    \Delta \dot{x} = \Delta \dot{x},
+    \]
+    \[
+    \Delta \ddot{x} = -g\Delta\theta - g\Delta\phi,
+    \]
+    \[
+    \Delta \dot{\theta} = \Delta \dot{\theta},\]
+    \[
+    \Delta \ddot{\theta}
+    =
+    -\frac{Mg\ell}{2J}\Delta\phi.
+    \]
+    Avec \(g=1\), \(M=1\), \(\ell=2\), et \(J=1/3\), on a :
+    \[
+    \frac{Mg\ell}{2J}=3.\]
+    Donc \(\Delta \phi\) permet d'agir sur la rotation du booster, et aussi sur son déplacement horizontal. On vérifie ensuite la contrôlabilité avec la matrice de contrôlabilité.
     """)
     return
 
 
 @app.cell
-def _(J, M, g, l, np):
+def _(g, np, rotation_gain):
     A_lat = np.array([
-        [0, 1,  0, 0],
+        [0, 1, 0, 0],
         [0, 0, -g, 0],
-        [0, 0,  0, 1],
-        [0, 0,  0, 0],
+        [0, 0, 0, 1],
+        [0, 0, 0, 0],
     ], dtype=float)
 
     B_lat = np.array([
         [0],
         [-g],
         [0],
-        [-M*g*l / (2*J)],
+        [-rotation_gain],
     ], dtype=float)
 
     n_lat = A_lat.shape[0]
-    cols_lat = [np.linalg.matrix_power(A_lat, i) @ B_lat for i in range(n_lat)]
-    C_lat = np.hstack(cols_lat)
-    rank_lat = np.linalg.matrix_rank(C_lat)
 
-    print("A_lat ="); print(A_lat)
-    print("\nB_lat ="); print(B_lat)
-    print(f"\nRank of lateral controllability matrix: {rank_lat}  (n = {n_lat})")
-    print("Lateral system is controllable:", rank_lat == n_lat)
+    controllability_matrix_lat = B_lat
+    for i in range(1, n_lat):
+        controllability_matrix_lat = np.hstack(
+            [controllability_matrix_lat, np.linalg.matrix_power(A_lat, i) @ B_lat]
+        )
+
+    rank_lat = np.linalg.matrix_rank(controllability_matrix_lat)
+    is_controllable_lat = rank_lat == n_lat
+
+    print("A_lat =")
+    print(A_lat)
+
+    print("B_lat =")
+    print(B_lat)
+
+    print("Rank of controllability matrix:", rank_lat)
+    print("State dimension:", n_lat)
+    print("Controllable?", is_controllable_lat)
     return A_lat, B_lat
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""
-    The reduced lateral system is also **controllable** (rank 4 = $n$).
-    """)
-    return
 
 
 @app.cell(hide_code=True)
@@ -1379,36 +1610,128 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ### 🔓 Solution
+    On utilise le modèle linéarisé latéral :
 
-    With $\Delta\phi = 0$ the lateral equations reduce to $\Delta\ddot{\theta} = 0$ and $\Delta\ddot{x} = -g\Delta\theta$. Since $\Delta\dot{\theta}(0)=0$, the tilt is **constant**: $\Delta\theta(t) = \pi/4$. The horizontal acceleration is then constant, so $x(t)$ grows quadratically — an **unbounded parabolic drift**, the expected open-loop instability.
+    \[
+    z =
+    \begin{bmatrix}
+    \Delta x \\
+    \Delta \dot{x} \\
+    \Delta \theta \\
+    \Delta \dot{\theta}
+    \end{bmatrix}
+    \]
+
+    avec la condition initiale :
+
+    \[
+    \Delta x(0)=0,\quad
+    \Delta \dot{x}(0)=0,\quad
+    \Delta \theta(0)=\frac{\pi}{4},\quad
+    \Delta \dot{\theta}(0)=0.
+    \]
+
+    On impose aussi :
+
+    \[
+    \Delta \phi(t)=0.
+    \]
+
+    Donc il n'y a pas de correction avec le moteur.
+
+    Comme \(\Delta \phi=0\), l'équation de rotation donne :
+
+    \[
+    \Delta \ddot{\theta}=0.
+    \]
+
+    Donc l'angle reste constant :
+
+    \[
+    \Delta \theta(t)=\frac{\pi}{4}.
+    \]
+
+    Mais comme le booster reste incliné, il crée une accélération horizontale :
+
+    \[
+    \Delta \ddot{x} = -g\Delta \theta.
+    \]
+
+    Donc \(x(t)\) dérive de plus en plus vers un côté.
+    On doit donc voir que \(\theta(t)\) reste constant, tandis que \(x(t)\) part de façon parabolique.
     """)
     return
 
 
 @app.cell
-def _(A_lat, B_lat, np, plt):
-    def lateral_free_fall_plot():
-        xi0 = np.array([0.0, 0.0, np.pi / 4, 0.0])
-        t = np.linspace(0, 10, 1000)
-        dt = t[1] - t[0]
-        xi = np.zeros((len(t), 4))
-        xi[0] = xi0
-        for k in range(len(t) - 1):
-            xi[k+1] = xi[k] + dt * (A_lat @ xi[k] + (B_lat * 0.0)[:, 0])
-        fig, axes = plt.subplots(1, 2, figsize=(10, 4))
-        axes[0].plot(t, xi[:, 0])
-        axes[0].set_title(r"Lateral position $\Delta x(t)$")
-        axes[0].set_xlabel("time $t$ (s)"); axes[0].set_ylabel(r"$\Delta x$ (m)")
-        axes[0].grid(True)
-        axes[1].plot(t, xi[:, 2] * 180 / np.pi, color="orange")
-        axes[1].axhline(45, color="grey", ls="--", label=r"$\theta_0 = 45°$")
-        axes[1].set_title(r"Tilt angle $\Delta\theta(t)$")
-        axes[1].set_xlabel("time $t$ (s)"); axes[1].set_ylabel(r"$\Delta\theta$ (degrees)")
-        axes[1].grid(True); axes[1].legend()
-        plt.tight_layout()
-        return fig
-    lateral_free_fall_plot()
+def _(A_lat, B_lat, np, plt, scipy):
+    def linear_free_fall_example():
+        t_span = [0.0, 5.0]
+
+        # z = [Delta x, Delta vx, Delta theta, Delta omega]
+        z0 = np.array([0.0, 0.0, np.pi / 4, 0.0])
+
+        def phi(t):
+            return 0.0
+
+        def rhs(t, z):
+            u = np.array([phi(t)])
+            return A_lat @ z + B_lat @ u
+
+        sol = scipy.integrate.solve_ivp(
+         rhs,t_span,z0, dense_output=True,
+        )
+
+        t = np.linspace(t_span[0], t_span[1], 1000)
+        z_t = sol.sol(t)
+
+        x_t = z_t[0]
+        theta_t = z_t[2]
+
+        plt.figure()
+        plt.plot(t, x_t, label=r"$\Delta x(t)$")
+        plt.title("Linear model: lateral position")
+        plt.xlabel("time $t$")
+        plt.ylabel(r"$\Delta x(t)$")
+        plt.grid(True)
+        plt.legend()
+        plt.show()
+
+        plt.figure()
+        plt.plot(t, theta_t, label=r"$\Delta \theta(t)$")
+        plt.axhline(np.pi / 4, color="grey", linestyle="--", label=r"$\pi/4$")
+        plt.title("Linear model: tilt angle")
+        plt.xlabel("time $t$")
+        plt.ylabel(r"$\Delta \theta(t)$")
+        plt.grid(True)
+        plt.legend()
+        plt.show()
+
+    linear_free_fall_example()
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ### Observation
+
+    Sur le graphe de \(\Delta \theta(t)\), on voit que l'angle reste constant à sa valeur initiale :
+
+    \[
+    \Delta \theta(t) = \frac{\pi}{4}.
+    \]
+
+    C'est logique, car on impose \(\Delta \phi(t)=0\). Donc le moteur ne crée pas de couple pour corriger l'inclinaison, et on a \[\Delta \ddot{\theta}=0.\]
+
+    Comme la vitesse angulaire initiale est aussi nulle, l'angle ne change pas.
+    Par contre, sur le graphe de \(\Delta x(t)\), on voit que la position horizontale dérive de plus en plus. Cela vient du fait que le booster reste incliné. Dans le modèle linéarisé :
+    \[
+    \Delta \ddot{x} = -g\Delta \theta.
+    \]
+    Comme \(\Delta \theta = \pi/4\), l'accélération horizontale est constante et non nulle. Donc \(\Delta x(t)\) évolue comme une parabole.
+    Conclusion : sans correction avec \(\phi\), le booster ne se redresse pas et il part horizontalement.
+    """)
     return
 
 
@@ -1456,75 +1779,148 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ### 🔓 Solution
+    ###réponse
+    On utilise le modèle latéral :
+    \[
+    z =
+    \begin{bmatrix}
+    \Delta x \\
+    \Delta \dot{x} \\
+    \Delta \theta \\
+    \Delta \dot{\theta}
+    \end{bmatrix}
+    \]
+    et la commande :\[
+    \Delta \phi(t) = -Kz(t).
+    \]
+    Dans cette question, on impose :\[
+    K = [0,\ 0,\ k_\theta,\ k_\omega].
+    \]
+    Donc on ne contrôle pas directement la position horizontale \(x\). On essaie seulement de corriger l'angle du booster.
+    L'idée est simple : si le booster est incliné, on choisit \(\phi\) pour créer un moment qui le ramène vers la verticale. On ajoute aussi un terme avec \(\dot{\theta}\) pour freiner la rotation.
 
-    **Thought process:** With $K = [0, 0, k_\theta, k_\omega]$ the angular closed-loop is
-
-    $$\Delta\ddot{\theta} = -\frac{Mg\ell}{2J}(k_\theta\,\Delta\theta + k_\omega\,\Delta\dot{\theta}).$$
-
-    With $Mg\ell/(2J) = 3$, the characteristic polynomial is $s^2 + 3k_\omega s + 3k_\theta = 0$. We need both roots in the left half-plane and settling within 20 s.
-
-    - **Guess 1** $k_\theta=0.5, k_\omega=0.5$: poles at $s = -0.75 \pm 0.97j$, settling $\approx 5$s — converges fast, check $\phi$ amplitude.
-    - **Guess 2** $k_\theta=0.1, k_\omega=0.5$: poles at $s=-0.75\pm 0.66j$, a bit slower.
-    - **Final** $k_\theta=0.1, k_\omega=1.0$: poles at $s=-1.5\pm 1.45j$, well-damped, settling $\approx 4$s, $|\phi|$ stays small.
+    Comme l'équation linéarisée de rotation est :\[
+    \Delta \ddot{\theta} = -3 \Delta \phi,
+    \]
+    et que\[
+    \Delta \phi = -k_\theta \Delta \theta - k_\omega \Delta \dot{\theta},
+    \]
+    on obtient :
+    \[
+    \Delta \ddot{\theta}
+    =
+    3 k_\theta \Delta \theta + 3 k_\omega \Delta \dot{\theta}.
+    \]
+    Pour stabiliser l'angle, il faut donc choisir \(k_\theta < 0\) et \(k_\omega < 0\).
     """)
     return
 
 
 @app.cell
-def _(A_lat, B_lat, np, plt):
-    def simulate_lateral(A_cl, K, t_end=30):
-        xi0 = np.array([0.0, 0.0, np.pi / 4, 0.0])
-        t = np.linspace(0, t_end, 3000)
-        dt = t[1] - t[0]
-        xi = np.zeros((len(t), 4))
-        xi[0] = xi0
-        for k in range(len(t) - 1):
-            xi[k+1] = xi[k] + dt * (A_cl @ xi[k])
-        phi = -(K @ xi.T)[0]
-        return t, xi, phi
+def _(A_lat, B_lat, np, plt, scipy):
+    def simulate_manual_controller(K, T=20.0):
+        K = np.array(K, dtype=float).reshape(1, 4)
+        z0 = np.array([0.0, 0.0, np.pi / 4, 0.0])
 
-    guesses = [
-        ([0, 0, 0.5, 0.5], "Guess 1: $k_\\theta=0.5,\\ k_\\omega=0.5$"),
-        ([0, 0, 0.1, 0.5], "Guess 2: $k_\\theta=0.1,\\ k_\\omega=0.5$"),
-        ([0, 0, 0.1, 1.0], "Final:   $k_\\theta=0.1,\\ k_\\omega=1.0$"),
-    ]
-    fig_man, axes_man = plt.subplots(2, 3, figsize=(14, 7))
-    for col, (k_vals, label) in enumerate(guesses):
-        K_try = np.array([k_vals])
-        A_cl_try = A_lat - B_lat @ K_try
-        t_m, xi_m, phi_m = simulate_lateral(A_cl_try, K_try)
-        axes_man[0, col].plot(t_m, xi_m[:, 2] * 180/np.pi)
-        axes_man[0, col].axhline( 90, ls="--", color="red", lw=0.8)
-        axes_man[0, col].axhline(-90, ls="--", color="red", lw=0.8)
-        axes_man[0, col].set_title(label, fontsize=9)
-        axes_man[0, col].set_ylabel(r"$\Delta\theta$ (°)"); axes_man[0, col].grid(True)
-        axes_man[1, col].plot(t_m, phi_m * 180/np.pi, color="orange")
-        axes_man[1, col].axhline( 90, ls="--", color="red", lw=0.8, label=r"$\pm\pi/2$")
-        axes_man[1, col].axhline(-90, ls="--", color="red", lw=0.8)
-        axes_man[1, col].set_ylabel(r"$\Delta\phi$ (°)"); axes_man[1, col].set_xlabel("t (s)")
-        axes_man[1, col].grid(True); axes_man[1, col].legend(fontsize=8)
-    plt.suptitle("Manual tuning iterations", fontsize=12)
-    plt.tight_layout()
-    plt.gcf()
-    return (simulate_lateral,)
+        def rhs(t, z):
+            phi = float(-(K @ z)[0])
+            return A_lat @ z + B_lat[:, 0] * phi
+
+        sol = scipy.integrate.solve_ivp(
+            rhs,
+            [0.0, T],
+            z0,
+            dense_output=True,
+        )
+
+        t = np.linspace(0.0, T, 1000)
+        z_t = sol.sol(t)
+
+        phi_t = np.array([
+            float(-(K @ z_t[:, i])[0])
+            for i in range(z_t.shape[1])
+        ])
+
+        eigenvalues = np.linalg.eigvals(A_lat - B_lat @ K)
+
+        return t, z_t, phi_t, eigenvalues
 
 
-@app.cell
-def _(A_lat, B_lat, np):
-    K_manual = np.array([[0.0, 0.0, 0.1, 1.0]])
-    A_cl_manual = A_lat - B_lat @ K_manual
-    eigs_manual = np.linalg.eigvals(A_cl_manual)
-    print("K_manual =", K_manual)
-    print("Closed-loop eigenvalues:", np.round(eigs_manual, 4))
-    print("Asymptotically stable:", bool(np.all(np.real(eigs_manual) < 0)))
+    # Essais 
+    guesses = {
+        "essai 1: doux": [0.0, 0.0, -0.020, -0.120],
+        "essai 2: retenu": [0.0, 0.0, -0.060, -0.300],
+        "essai 3: plus nerveux": [0.0, 0.0, -0.150, -0.700],
+    }
+
+    plt.figure()
+    for label, K in guesses.items():
+        t, z_t, phi_t, eigs = simulate_manual_controller(K)
+        theta_t = z_t[2]
+        plt.plot(t, theta_t, label=label)
+
+    plt.axhline(np.pi / 2, color="grey", linestyle="--", label=r"$\pi/2$")
+    plt.axhline(-np.pi / 2, color="grey", linestyle="--", label=r"$-\pi/2$")
+    plt.xlabel("time t")
+    plt.ylabel(r"$\Delta \theta(t)$")
+    plt.title("Manual tuning: angle response")
+    plt.grid(True)
+    plt.legend()
+    plt.show()
+
+
+    # Choix final
+    K_manual = np.array([[0.0, 0.0, -0.060, -0.300]])
+
+    t, z_t, phi_t, eigs_manual = simulate_manual_controller(K_manual)
+
+
+    plt.figure()
+    plt.plot(t, phi_t, label=r"$\Delta \phi(t)$")
+    plt.axhline(np.pi / 2, color="grey", linestyle="--", label=r"$\pi/2$")
+    plt.axhline(-np.pi / 2, color="grey", linestyle="--", label=r"$-\pi/2$")
+    plt.xlabel("time t")
+    plt.ylabel(r"$\Delta \phi(t)$")
+    plt.title("Manual controller: command")
+    plt.grid(True)
+    plt.legend()
+    plt.show()
+
+
+    plt.figure()
+    plt.plot(t, z_t[0], label=r"$\Delta x(t)$")
+    plt.xlabel("time t")
+    plt.ylabel(r"$\Delta x(t)$")
+    plt.title("Manual controller: horizontal drift")
+    plt.grid(True)
+    plt.legend()
+    plt.show()
+
+    print("Final K_manual =", K_manual)
+    print("Max |theta| =", np.max(np.abs(z_t[2])))
+    print("Max |phi| =", np.max(np.abs(phi_t)))
+    print("Closed-loop eigenvalues =", eigs_manual)
+
     return
 
 
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    All closed-loop eigenvalues have strictly negative real part: the closed-loop is **asymptotically stable**. Both $|\Delta\theta|$ and $|\Delta\phi|$ stay well within $\pi/2$, and $\theta\to 0$ in about 5 s. $\Delta x$ drifts (as expected, since $K$ ignores it).
+    ### Observation
+
+    Avec le premier essai, l'angle revient vers 0 mais assez lentement.
+    Avec le troisième essai, la correction est plus forte.
+    J'ai gardé l'essai intermédiaire :
+    \[
+    K = [0, 0, -0.060, -0.300].
+    \]
+    Avec ce choix, \(\Delta \theta(t)\) revient vers 0 en moins de 20 secondes, et la commande \(\Delta \phi(t)\) reste largement dans l'intervalle autorisé :
+    \[
+    |\Delta \phi(t)| < \frac{\pi}{2}.
+    \]
+    Par contre, comme les deux premiers coefficients de \(K\) sont nuls, le contrôleur ne corrige pas directement la position horizontale. Donc \(x(t)\) peut dériver.
+    La dynamique en boucle fermée n'est donc pas asymptotiquement stable pour tout l'état latéral, car la partie \(x\) n'est pas stabilisée. Mais pour l'objectif demandé ici, c'est acceptable, car on voulait surtout ramener l'angle \(\theta\) vers 0.
     """)
     return
 
@@ -1571,43 +1967,151 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ### 🔓 Solution
+    ### Solution
+    On utilise le modèle latéral :
+    \[
+    \dot{z} = A_{\text{lat}}z + B_{\text{lat}}\Delta\phi
+    \]
+    avec
+    \[
+    z =
+    \begin{bmatrix}
+    \Delta x \\
+    \Delta \dot{x} \\
+    \Delta \theta \\
+    \Delta \dot{\theta}
+    \end{bmatrix}.
+    \]
 
-    We use `scipy.signal.place_poles` to assign all four poles. Now all four states (including $\Delta x$) must converge, so all poles must have $\text{Re}(s) < 0$. We choose poles with $|\text{Re}| \approx 0.3$–$0.4$ so that settling takes roughly $1/0.3 \approx 3$ s (well within 20 s) while keeping $|\Delta\phi|$ small for $\theta_0 = \pi/4$.
+    On cherche une commande de la forme :
 
-    **Chosen poles:** $-0.3 \pm 0.2j$ and $-0.4 \pm 0.1j$.
+    \[
+    \Delta \phi(t) = -K_{pp}z(t).
+    \]
+    Donc le système en boucle fermée devient :
+
+    \[
+    \dot{z} = (A_{\text{lat}} - B_{\text{lat}}K_{pp})z.
+    \]
+
+    L'idée du pole placement est de choisir directement les valeurs propres de la matrice fermée
+    \(A_{\text{lat}} - B_{\text{lat}}K_{pp}\).
+
+    Pour que le système soit asymptotiquement stable, il faut choisir des pôles avec une partie réelle négative.
+    J'ai choisi les pôles :
+    \[
+    -0.5,\quad -0.7,\quad -9.0,\quad -1.1.
+    \]
+    Ils ne sont pas trop lents, donc le retour vers zéro se fait avant environ 20 secondes, mais ils ne sont pas trop rapides non plus pour éviter une commande \(\Delta \phi\) trop grande.
     """)
     return
 
 
 @app.cell
-def _(A_lat, B_lat, np):
-    from scipy.signal import place_poles as _place_poles
-    desired_poles = np.array([-0.3+0.2j, -0.3-0.2j, -0.4+0.1j, -0.4-0.1j])
-    result_pp = _place_poles(A_lat, B_lat, desired_poles)
-    K_pp = result_pp.gain_matrix
+def _(A_lat, B_lat, np, plt):
+    from scipy.signal import place_poles
+    from scipy.integrate import solve_ivp
+
+
+    desired_poles = np.array([-0.5, -0.7, -0.9, -1.1])
+
+    K_pp = place_poles(A_lat, B_lat, desired_poles).gain_matrix
+
     A_cl_pp = A_lat - B_lat @ K_pp
     eigs_pp = np.linalg.eigvals(A_cl_pp)
-    print("K_pp =", np.round(K_pp, 4))
-    print("Closed-loop eigenvalues:", np.round(eigs_pp, 4))
-    print("Asymptotically stable:", bool(np.all(np.real(eigs_pp) < 0)))
-    return A_cl_pp, K_pp
+
+    print("Pôles demandés =", desired_poles)
+    print("K_pp =", K_pp)
+    print("Valeurs propres obtenues =", eigs_pp)
+
+    # Simul
+    T = 20.0
+    z0 = np.array([0.0, 0.0, np.pi / 4, 0.0])
+
+    def rhs_pp(t, z):
+        return A_cl_pp @ z
+
+    sol_pp = solve_ivp(
+        rhs_pp,
+        [0.0, T],
+        z0,
+        dense_output=True,
+    )
+
+    tt = np.linspace(0.0, T, 1000)
+    z_tt = sol_pp.sol(tt)
+
+    x_tt = z_tt[0]
+    vx_tt = z_tt[1]
+    theta_tt = z_tt[2]
+    omega_tt = z_tt[3]
+
+    phi_tt = -(K_pp @ z_tt).ravel()
+
+    print("Max |theta| =", np.max(np.abs(theta_tt)))
+    print("Max |phi| =", np.max(np.abs(phi_tt)))
+    print("pi/2 =", np.pi / 2)
+    print("x(20) =", x_tt[-1])
+    print("theta(20) =", theta_tt[-1])
+
+    # Graphe 1 : position latérale
+    plt.figure(figsize=(7, 4))
+    plt.plot(tt, x_tt, color="darkgreen", linewidth=2.0, label=r"$\Delta x(t)$")
+    plt.axhline(0, color="black", linestyle="--", linewidth=1)
+    plt.title("Pole placement — position laterale")
+    plt.xlabel("time t")
+    plt.ylabel(r"$\Delta x(t)$")
+    plt.grid(True, alpha=0.3)
+    plt.legend()
+    plt.show()
+
+    # Graphe 2 : angle
+    plt.figure(figsize=(7, 4))
+    plt.plot(tt, theta_tt, color="darkorange", linewidth=2.0, label=r"$\Delta \theta(t)$")
+    plt.axhline(0, color="black", linestyle="--", linewidth=1)
+    plt.axhline(np.pi / 2, color="red", linestyle=":", linewidth=1, label=r"$\pm \pi/2$")
+    plt.axhline(-np.pi / 2, color="red", linestyle=":", linewidth=1)
+    plt.title("Pole placement — angle du booster")
+    plt.xlabel("time t")
+    plt.ylabel(r"$\Delta \theta(t)$")
+    plt.grid(True, alpha=0.3)
+    plt.legend()
+    plt.show()
+
+    # Graphe 3 : commande
+    plt.figure(figsize=(7, 4))
+    plt.plot(tt, phi_tt, color="purple", linewidth=2.0, label=r"$\Delta \phi(t)$")
+    plt.axhline(np.pi / 2, color="red", linestyle="--", linewidth=1, label=r"$\pm \pi/2$")
+    plt.axhline(-np.pi / 2, color="red", linestyle="--", linewidth=1)
+    plt.title("Pole placement — commande moteur")
+    plt.xlabel("time t")
+    plt.ylabel(r"$\Delta \phi(t)$")
+    plt.grid(True, alpha=0.3)
+    plt.legend()
+    plt.show()
+
+    # Graphe 4 : comparaison theta et phi
+    plt.figure(figsize=(7, 4))
+    plt.plot(tt, theta_tt, color="darkorange", linewidth=2.0, label=r"$\Delta \theta(t)$")
+    plt.plot(tt, phi_tt, color="purple", linewidth=2.0, linestyle="--", label=r"$\Delta \phi(t)$")
+    plt.axhline(0, color="black", linestyle="--", linewidth=1)
+    plt.title("Comparaison angle / commande")
+    plt.xlabel("time t")
+    plt.grid(True, alpha=0.3)
+    plt.legend()
+    plt.show()
+    return (K_pp,)
 
 
-@app.cell
-def _(A_cl_pp, K_pp, np, plt, simulate_lateral):
-    t_pp, xi_pp, phi_pp = simulate_lateral(A_cl_pp, K_pp)
-    fig_pp, axes_pp = plt.subplots(1, 3, figsize=(14, 4))
-    axes_pp[0].plot(t_pp, xi_pp[:, 0])
-    axes_pp[0].set_title(r"$\Delta x(t)$"); axes_pp[0].set_xlabel("t (s)"); axes_pp[0].grid(True)
-    axes_pp[1].plot(t_pp, xi_pp[:, 2] * 180/np.pi, color="orange")
-    axes_pp[1].axhline(90, ls="--", color="red", lw=0.8); axes_pp[1].axhline(-90, ls="--", color="red", lw=0.8)
-    axes_pp[1].set_title(r"$\Delta\theta(t)$"); axes_pp[1].set_xlabel("t (s)"); axes_pp[1].grid(True)
-    axes_pp[2].plot(t_pp, phi_pp * 180/np.pi, color="green")
-    axes_pp[2].axhline(90, ls="--", color="red", lw=0.8, label=r"$\pm\pi/2$"); axes_pp[2].axhline(-90, ls="--", color="red", lw=0.8)
-    axes_pp[2].set_title(r"$\Delta\phi(t)$"); axes_pp[2].set_xlabel("t (s)"); axes_pp[2].grid(True); axes_pp[2].legend()
-    plt.suptitle("Pole Placement Controller", fontsize=12); plt.tight_layout()
-    plt.gcf()
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ### Observation
+    Avec les pôles choisis \(-0.5\), \(-0.7\), \(-0.9\) et \(-1.1\), les valeurs propres de la boucle fermée sont toutes négatives. Le modèle linéaire est donc asymptotiquement stable.
+    Sur les graphes, on voit que \(\Delta \theta(t)\) revient vers 0 et que \(\Delta x(t)\) revient aussi vers 0.
+    Ce contrôleur est plus complet que le réglage manuel, car il corrige à la fois l'inclinaison et la position horizontale.
+    La commande \(\Delta \phi(t)\) reste inférieure à \(\pi/2\), donc la contrainte est respectée.
+    """)
     return
 
 
@@ -1626,46 +2130,124 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ### 🔓 Solution
-
-    We use LQR, minimizing $\int_0^\infty (\xi^\top Q \xi + R\,\Delta\phi^2)\,dt$. The gain is $K_{oc} = R^{-1}B^\top P$ where $P$ solves the algebraic Riccati equation, computed with `scipy.linalg.solve_continuous_are`.
-
-    **Parameter choice:**
-    - $Q = \mathrm{diag}(1, 0, 10, 0)$: penalise $\Delta x$ and $\Delta\theta$ (heavier weight on tilt for prompt correction).
-    - $R = 1$: moderate control effort penalty to keep $|\Delta\phi|$ small.
+    ### Solution
+    Ici, on utilise un contrôleur optimal de type LQR sur le modèle latéral :
+    \[
+    \dot{z} = A_{\text{lat}}z + B_{\text{lat}}\Delta\phi.
+    \]
+    La commande est :
+    \[
+    \Delta\phi(t) = -K_{oc}z(t).
+    \]
+    Le principe est de choisir deux matrices \(Q\) et \(R\).
+    \(Q\) pénalise les erreurs d'état, donc par exemple l'erreur de position ou d'angle.
+    \(R\) pénalise l'utilisation de la commande \(\Delta\phi\).
+    J'ai choisi de donner plus d'importance à l'angle \(\Delta\theta\), car le but principal est de redresser le booster, tout en gardant une commande raisonnable.
     """)
     return
 
 
 @app.cell
-def _(A_lat, B_lat, np):
-    import scipy.linalg as _la
-    Q_lqr = np.diag([1.0, 0.0, 10.0, 0.0])
-    R_lqr = np.array([[1.0]])
-    P_lqr = _la.solve_continuous_are(A_lat, B_lat, Q_lqr, R_lqr)
-    K_oc = np.linalg.inv(R_lqr) @ B_lat.T @ P_lqr
-    A_cl_oc = A_lat - B_lat @ K_oc
-    eigs_oc = np.linalg.eigvals(A_cl_oc)
-    print("K_oc =", np.round(K_oc, 4))
-    print("Closed-loop eigenvalues:", np.round(eigs_oc, 4))
-    print("Asymptotically stable:", bool(np.all(np.real(eigs_oc) < 0)))
-    return A_cl_oc, K_oc
+def _(A_lat, B_lat, np, plt, scipy):
+    # z = [Delta x, Delta vx, Delta theta, Delta omega]
+    # LQR
+    oc_Q = np.diag([3.0, 0.5, 70.0, 8.0])
+    oc_R = np.array([[300.0]])
+
+    # Résolution de l'équation de Riccati
+    oc_P = scipy.linalg.solve_continuous_are(A_lat, B_lat, oc_Q, oc_R)
+
+    # Gain LQR
+    K_lqr_custom = np.linalg.inv(oc_R) @ B_lat.T @ oc_P
+
+    # Boucle 
+    oc_A_cl = A_lat - B_lat @ K_lqr_custom
+    oc_eigs = np.linalg.eigvals(oc_A_cl)
+
+    print("Q =", oc_Q)
+    print("R =", oc_R)
+    print("K_lqr_custom =", K_lqr_custom)
+    print("Closed-loop eigenvalues =", oc_eigs)
+
+    # Simulation
+    oc_T = 20.0
+    oc_z_initial = np.array([0.0, 0.0, np.pi / 4, 0.0])
+
+    def oc_rhs(t, z):
+        return oc_A_cl @ z
+
+    oc_sol = scipy.integrate.solve_ivp(
+        oc_rhs,
+        [0.0, oc_T],
+        oc_z_initial,
+        dense_output=True,
+    )
+
+    oc_time = np.linspace(0.0, oc_T, 1000)
+    oc_traj = oc_sol.sol(oc_time)
+
+    oc_x = oc_traj[0]
+    oc_vx = oc_traj[1]
+    oc_theta = oc_traj[2]
+    oc_omega = oc_traj[3]
+
+    oc_phi = -(K_lqr_custom @ oc_traj).ravel()
+
+    print("Max |theta| =", np.max(np.abs(oc_theta)))
+    print("Max |phi| =", np.max(np.abs(oc_phi)))
+    print("pi/2 =", np.pi / 2)
+    print("x(20) =", oc_x[-1])
+    print("theta(20) =", oc_theta[-1])
+
+    # Graphe 1 : position et angle
+    plt.figure(figsize=(8, 4))
+    plt.plot(oc_time, oc_x, color="seagreen", linewidth=2, label=r"$\Delta x(t)$")
+    plt.plot(oc_time, oc_theta, color="darkorange", linewidth=2, label=r"$\Delta \theta(t)$")
+    plt.axhline(0, color="black", linestyle="--", linewidth=1)
+    plt.title("LQR — position et angle")
+    plt.xlabel("time t")
+    plt.grid(True, alpha=0.3)
+    plt.legend()
+    plt.show()
+
+    # Graphe 2 : commande phi
+    plt.figure(figsize=(8, 4))
+    plt.plot(oc_time, oc_phi, color="indigo", linewidth=2, label=r"$\Delta \phi(t)$")
+    plt.axhline(np.pi / 2, color="red", linestyle="--", linewidth=1, label=r"$\pm \pi/2$")
+    plt.axhline(-np.pi / 2, color="red", linestyle="--", linewidth=1)
+    plt.title("LQR — commande")
+    plt.xlabel("time t")
+    plt.ylabel(r"$\Delta \phi(t)$")
+    plt.grid(True, alpha=0.3)
+    plt.legend()
+    plt.show()
+
+    # Graphe 3 : vitesses
+    plt.figure(figsize=(8, 4))
+    plt.plot(oc_time, oc_vx, color="steelblue", linewidth=2, label=r"$\Delta \dot{x}(t)$")
+    plt.plot(oc_time, oc_omega, color="crimson", linewidth=2, label=r"$\Delta \dot{\theta}(t)$")
+    plt.axhline(0, color="black", linestyle="--", linewidth=1)
+    plt.title("LQR — vitesses")
+    plt.xlabel("time t")
+    plt.grid(True, alpha=0.3)
+    plt.legend()
+    plt.show()
+    return (K_lqr_custom,)
 
 
-@app.cell
-def _(A_cl_oc, K_oc, np, plt, simulate_lateral):
-    t_oc, xi_oc, phi_oc = simulate_lateral(A_cl_oc, K_oc)
-    fig_oc, axes_oc = plt.subplots(1, 3, figsize=(14, 4))
-    axes_oc[0].plot(t_oc, xi_oc[:, 0])
-    axes_oc[0].set_title(r"$\Delta x(t)$"); axes_oc[0].set_xlabel("t (s)"); axes_oc[0].grid(True)
-    axes_oc[1].plot(t_oc, xi_oc[:, 2] * 180/np.pi, color="orange")
-    axes_oc[1].axhline(90, ls="--", color="red", lw=0.8); axes_oc[1].axhline(-90, ls="--", color="red", lw=0.8)
-    axes_oc[1].set_title(r"$\Delta\theta(t)$"); axes_oc[1].set_xlabel("t (s)"); axes_oc[1].grid(True)
-    axes_oc[2].plot(t_oc, phi_oc * 180/np.pi, color="green")
-    axes_oc[2].axhline(90, ls="--", color="red", lw=0.8, label=r"$\pm\pi/2$"); axes_oc[2].axhline(-90, ls="--", color="red", lw=0.8)
-    axes_oc[2].set_title(r"$\Delta\phi(t)$"); axes_oc[2].set_xlabel("t (s)"); axes_oc[2].grid(True); axes_oc[2].legend()
-    plt.suptitle("LQR Optimal Controller", fontsize=12); plt.tight_layout()
-    plt.gcf()
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ### Observation
+
+    Avec ce choix de \(Q\) et \(R\), les valeurs propres de la boucle fermée ont une partie réelle négative. Donc le modèle linéaire est asymptotiquement stable.
+
+    On voit sur les graphes que l'angle \(\Delta\theta(t)\) revient vers 0, et que la position \(\Delta x(t)\) revient aussi vers 0.
+
+    La commande \(\Delta\phi(t)\) reste inférieure à \(\pi/2\), donc elle respecte la contrainte demandée.
+
+    Ce réglage est différent du placement de pôles : ici, je ne choisis pas directement les valeurs propres. Je choisis plutôt les poids \(Q\) et \(R\), puis le gain \(K_{oc}\) est calculé automatiquement.
+    """)
     return
 
 
@@ -1682,58 +2264,224 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ### 🔓 Solution
+    ###  Solution
 
-    We apply each linear controller to the nonlinear booster. The full state is $(x, \dot{x}, y, \dot{y}, \theta, \dot{\theta})$; we compute $\Delta\phi = -K \cdot (x, \dot{x}, \theta, \dot{\theta})$ and clamp it to $(-\pi/2, \pi/2)$ for safety. We fix $f = Mg$.
+    Ici, je teste les deux contrôleurs trouvés avant sur le modèle non linéaire complet.
+
+    Les contrôleurs ont été calculés avec le modèle linéarisé, donc il faut vérifier qu'ils marchent aussi avec les vraies équations :
+
+    \[
+    \ddot{x} = -\frac{f}{M}\sin(\theta+\phi),
+    \]
+
+    \[
+    \ddot{y} = \frac{f}{M}\cos(\theta+\phi)-g,
+    \]
+
+    \[
+    \ddot{\theta} =
+    -\frac{f}{J}\frac{\ell}{2}\sin(\phi).
+    \]
+
+    Je garde \(f = Mg\), et je contrôle seulement l'angle du moteur :
+
+    \[
+    \phi(t) = -Kz(t),
+    \]
+
+    avec
+
+    \[
+    z =
+    \begin{bmatrix}
+    x \\
+    \dot{x} \\
+    \theta \\
+    \dot{\theta}
+    \end{bmatrix}.
+    \]
+
+    Le but est de vérifier que \(x(t)\) et \(\theta(t)\) reviennent vers 0, et que la commande reste raisonnable.
     """)
     return
 
 
 @app.cell
-def _(K_pp, M, booster_anim, g, mo, np, redstart_solve, world):
-    def anim_pp():
-        t_span = [0.0, 30.0]
-        y0 = [0.0, 0.0, 10.0, 0.0, np.pi / 4, 0.0]
-        def f_phi_pp(t, state):
+def _(
+    K_lqr_custom,
+    K_pp,
+    M,
+    booster_anim,
+    g,
+    mo,
+    np,
+    plt,
+    redstart_solve,
+    world,
+):
+    def validate_nonlinear_controller(K, name, T=20.0, y_start=80.0):
+        K = np.array(K, dtype=float).reshape(1, 4)
+
+    
+        # [x, vx, y, vy, theta, omega]
+        # Etat  non linéaire :
+        y0 = np.array([0.0, 0.0, y_start, 0.0, np.pi / 4, 0.0])
+
+        def controller_phi(state):
             x, vx, y, vy, theta, omega = state
-            xi_lat = np.array([x, vx, theta, omega])
-            dphi = (-(K_pp @ xi_lat)).item()
-            dphi = np.clip(dphi, -np.pi/2, np.pi/2)
-            return np.array([M * g, dphi])
-        sol = redstart_solve(t_span, y0, f_phi_pp)
-        return mo.Html(world(
-            [-5, 5, -2, 14],
-            booster_anim(
-                lambda t: sol(t)[0], lambda t: sol(t)[2], lambda t: sol(t)[4],
-                lambda t: f_phi_pp(t, sol(t))[0], lambda t: f_phi_pp(t, sol(t))[1],
-                T=t_span[1]
+            z_lat = np.array([x, vx, theta, omega])
+            return float(-(K @ z_lat)[0])
+
+        def f_phi(t, state):
+            phi = controller_phi(state)
+            f = M * g
+            return np.array([f, phi])
+
+        sol = redstart_solve([0.0, T], y0, f_phi)
+
+        tt = np.linspace(0.0, T, 1000)
+        states = sol(tt)
+        x_tt = states[0]
+        y_tt = states[2]
+        theta_tt = states[4]
+
+        phi_tt = np.array([
+            controller_phi(states[:, i])
+            for i in range(states.shape[1])
+        ])
+
+        print("-----", name, "----")
+        print("x(T) =", x_tt[-1])
+        print("theta(T) =", theta_tt[-1])
+        print("Max |theta| =", np.max(np.abs(theta_tt)))
+  
+        print("Max |phi| =", np.max(np.abs(phi_tt)))
+        print("pi/2 =", np.pi / 2)
+        if np.max(np.abs(phi_tt)) > np.pi / 2:
+            print("Attention : phi dépasse pi/2. Il faudrait retoucher le contrôleur.")
+        else:
+            print("Contrainte sur phi respectée.")
+        return {
+            "name": name,
+            "K": K,
+            "sol": sol,
+            "tt": tt,
+            "x": x_tt,
+            "y": y_tt,
+            "theta": theta_tt,
+            "phi": phi_tt,
+            "T": T,
+        }
+
+
+    pp_result = validate_nonlinear_controller(K_pp, "Pole placement")
+    oc_result = validate_nonlinear_controller(K_lqr_custom, "Optimal control / LQR")
+
+
+    # Comparaison de x(t)
+    plt.figure(figsize=(8, 4))
+    plt.plot(pp_result["tt"], pp_result["x"], color="darkslateblue", linewidth=2, label="Pole placement")
+    plt.plot(oc_result["tt"], oc_result["x"], color="mediumseagreen", linewidth=2, linestyle="--", label="Optimal control")
+    plt.axhline(0, color="black", linestyle=":", linewidth=1)
+    plt.title("Nonlinear validation — lateral position")
+    plt.xlabel("time t")
+    plt.ylabel("x(t)")
+    plt.grid(True, alpha=0.3)
+    plt.legend()
+    plt.show()
+
+
+    # Comparaison de theta(t
+    plt.figure(figsize=(8, 4))
+    plt.plot(pp_result["tt"], pp_result["theta"], color="darkorange", linewidth=2, label="Pole placement")
+    plt.plot(oc_result["tt"], oc_result["theta"], color="crimson", linewidth=2, linestyle="--", label="Optimal control")
+    plt.axhline(0, color="black", linestyle=":", linewidth=1)
+    plt.axhline(np.pi / 2, color="grey", linestyle="--", linewidth=1)
+    plt.axhline(-np.pi / 2, color="grey", linestyle="--", linewidth=1)
+    plt.title("Nonlinear validation — tilt angle")
+    plt.xlabel("time t")
+    plt.ylabel(r"$\theta(t)$")
+    plt.grid(True, alpha=0.3)
+    plt.legend()
+    plt.show()
+
+
+    # Comparaison de phi
+    plt.figure(figsize=(8, 4))
+    plt.plot(pp_result["tt"], pp_result["phi"], color="purple", linewidth=2, label="Pole placement")
+    plt.plot(oc_result["tt"], oc_result["phi"], color="teal", linewidth=2, linestyle="--", label="Optimal control")
+    plt.axhline(np.pi / 2, color="red", linestyle="--", linewidth=1, label=r"$\pm \pi/2$")
+    plt.axhline(-np.pi / 2, color="red", linestyle="--", linewidth=1)
+    plt.title("Nonlinear validation — command")
+    plt.xlabel("time t")
+    plt.ylabel(r"$\phi(t)$")
+    plt.grid(True, alpha=0.3)
+    plt.legend()
+    plt.show()
+
+
+    def nonlinear_animation(result):
+        sol = result["sol"]
+        K = result["K"]
+        T = result["T"]
+
+        def x(t):
+            return sol(t)[0]
+
+        def y(t):
+            return sol(t)[2]
+
+        def theta(t):
+            return sol(t)[4]
+
+        def f(t):
+            return M * g
+
+        def phi(t):
+            state = sol(t)
+            z_lat = np.array([state[0], state[1], state[4], state[5]])
+            return float(-(K @ z_lat)[0])
+
+        return mo.Html(
+            f"<h3>{result['name']}</h3>"
+            + world(
+                [-15, 15, -5, 90],
+                booster_anim(x, y, theta, f, phi, T=T),
             )
-        )).center()
-    mo.vstack([mo.md("**Pole Placement — nonlinear model validation:**"), anim_pp()])
+        )
+
+
+    mo.vstack(
+        [
+            nonlinear_animation(pp_result),
+            nonlinear_animation(oc_result),
+        ]
+    )
+
     return
 
 
-@app.cell
-def _(K_oc, M, booster_anim, g, mo, np, redstart_solve, world):
-    def anim_oc():
-        t_span = [0.0, 30.0]
-        y0 = [0.0, 0.0, 10.0, 0.0, np.pi / 4, 0.0]
-        def f_phi_oc(t, state):
-            x, vx, y, vy, theta, omega = state
-            xi_lat = np.array([x, vx, theta, omega])
-            dphi = (-(K_oc @ xi_lat)).item()
-            dphi = np.clip(dphi, -np.pi/2, np.pi/2)
-            return np.array([M * g, dphi])
-        sol = redstart_solve(t_span, y0, f_phi_oc)
-        return mo.Html(world(
-            [-5, 5, -2, 14],
-            booster_anim(
-                lambda t: sol(t)[0], lambda t: sol(t)[2], lambda t: sol(t)[4],
-                lambda t: f_phi_oc(t, sol(t))[0], lambda t: f_phi_oc(t, sol(t))[1],
-                T=t_span[1]
-            )
-        )).center()
-    mo.vstack([mo.md("**LQR Optimal Control — nonlinear model validation:**"), anim_oc()])
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ### Observations
+
+    Les deux contrôleurs sont ensuite testés sur le vrai modèle non linéaire.
+
+    On vérifie sur les graphes que \(x(t)\) revient vers 0 et que \(\theta(t)\) revient aussi vers 0.
+    Cela montre que les contrôleurs calculés sur le modèle linéaire restent valables sur le modèle complet.
+
+    On vérifie aussi la commande \(\phi(t)\). Si elle reste dans l'intervalle
+
+    \[
+    |\phi(t)| < \frac{\pi}{2},
+    \]
+
+    alors la contrainte demandée est respectée.
+
+    Sur l'animation, le booster se redresse progressivement.
+    La hauteur \(y(t)\) n'est très importante ici, car dans cette partie on contrôle seulement la dynamique latérale.
+    """)
     return
 
 
