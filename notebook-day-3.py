@@ -2194,7 +2194,7 @@ def _(mo):
     Let
     $$
     R(\alpha) =
-    \begin{bmatrix} +\cos \alpha & -\sin \alpha \\ +\sin \alpha & -\cos \alpha
+    \begin{bmatrix} +\cos \alpha & -\sin \alpha \\ +\sin \alpha & +\cos \alpha
     \end{bmatrix}
     $$
 
@@ -2358,13 +2358,172 @@ def _(mo):
     \end{bmatrix}.
     \]
 
-    Pour calculer \(\ddot h\), on dérive encore une fois.
-    Sans simplification, on obtient des termes avec \(\ddot{x}\), \(\ddot{y}\), \(\dot{\theta}^2\) et \(\ddot{\theta}\).
+    Pour calculer \(\ddot h\), on dérive encore une fois chaque composante.
 
-    Ensuite, on les remplace par les équations du mouvement du booster.
-    Puis on utilise cette force spéciale donnée par le système auxiliaire.
+    Pour la première composante :
 
-    On obtient alors :
+    \[
+    \dot h_x = \dot{x} - \frac{\ell}{6}\cos\theta \dot{\theta}.
+    \]
+
+    Donc :
+
+    \[
+    \ddot h_x
+    =
+    \ddot{x}
+    -
+    \frac{\ell}{6}
+    \left(
+    -\sin\theta \dot{\theta}^2
+    +
+    \cos\theta \ddot{\theta}
+    \right).
+    \]
+
+    Ainsi :
+
+    \[
+    \ddot h_x
+    =
+    \ddot{x}
+    +
+    \frac{\ell}{6}\sin\theta \dot{\theta}^2
+    -
+    \frac{\ell}{6}\cos\theta \ddot{\theta}.
+    \]
+
+    Pour la deuxième composante :
+
+    \[
+    \dot h_y = \dot{y} - \frac{\ell}{6}\sin\theta \dot{\theta}.
+    \]
+
+    Donc :
+
+    \[
+    \ddot h_y
+    =
+    \ddot{y}
+    -
+    \frac{\ell}{6}
+    \left(
+    \cos\theta \dot{\theta}^2
+    +
+    \sin\theta \ddot{\theta}
+    \right).
+    \]
+
+    Ainsi :
+
+    \[
+    \ddot h_y
+    =
+    \ddot{y}
+    -
+    \frac{\ell}{6}\cos\theta \dot{\theta}^2
+    -
+    \frac{\ell}{6}\sin\theta \ddot{\theta}.
+    \]
+
+    Maintenant, on remplace \(\ddot{x}\), \(\ddot{y}\) et \(\ddot{\theta}\) par les équations du mouvement.
+
+    Pour le centre de masse :
+
+    \[
+    M\ddot{x}=f_x,
+    \qquad
+    M\ddot{y}=f_y-Mg.
+    \]
+
+    Donc :
+
+    \[
+    \ddot{x}=\frac{f_x}{M},
+    \qquad
+    \ddot{y}=\frac{f_y}{M}-g.
+    \]
+
+    Pour la rotation, avec le système auxiliaire on obtient :
+
+    \[
+    \ddot{\theta} = \frac{v_2}{z}.
+    \]
+
+    La force auxiliaire est choisie sous la forme :
+
+    \[
+    \begin{bmatrix}
+    f_x\\
+    f_y
+    \end{bmatrix}
+    =
+    R\left(\theta-\frac{\pi}{2}\right)
+    \begin{bmatrix}
+    z-\frac{M\ell \dot{\theta}^2}{6}\\
+    \frac{M\ell v_2}{6z}
+    \end{bmatrix}.
+    \]
+
+    En utilisant la matrice \(R\left(\theta-\frac{\pi}{2}\right)\), on obtient :
+
+    \[
+    f_x
+    =
+    \left(z-\frac{M\ell\dot{\theta}^2}{6}\right)\sin\theta
+    +
+    \frac{M\ell v_2}{6z}\cos\theta,
+    \]
+
+    \[
+    f_y
+    =
+    -\left(z-\frac{M\ell\dot{\theta}^2}{6}\right)\cos\theta
+    +
+    \frac{M\ell v_2}{6z}\sin\theta.
+    \]
+
+    On remplace alors ces expressions dans \(\ddot h_x\) et \(\ddot h_y\).
+
+    Pour \(\ddot h_x\) :
+
+    \[
+    \ddot h_x
+    =
+    \frac{f_x}{M}
+    +
+    \frac{\ell}{6}\sin\theta \dot{\theta}^2
+    -
+    \frac{\ell}{6}\cos\theta \frac{v_2}{z}.
+    \]
+
+    Après remplacement de \(f_x\), les termes en \(\dot{\theta}^2\) et en \(v_2\) se compensent, et il reste :
+
+    \[
+    \ddot h_x = \frac{z}{M}\sin\theta.
+    \]
+
+    Pour \(\ddot h_y\) :
+
+    \[
+    \ddot h_y
+    =
+    \frac{f_y}{M}
+    -
+    g
+    -
+    \frac{\ell}{6}\cos\theta \dot{\theta}^2
+    -
+    \frac{\ell}{6}\sin\theta \frac{v_2}{z}.
+    \]
+
+    Après remplacement de \(f_y\), les termes en \(\dot{\theta}^2\) et en \(v_2\) se compensent aussi, et il reste :
+
+    \[
+    \ddot h_y = -\frac{z}{M}\cos\theta - g.
+    \]
+
+    Finalement :
 
     \[
     \ddot h =
@@ -2374,36 +2533,9 @@ def _(mo):
     \end{bmatrix}.
     \]
 
-    Donc \(\ddot h\) dépend seulement de \(\theta\), de \(z\) et des constantes du problème.
-
-    Or \(M=1\), cela devient simplement :
-
-    \[
-    \ddot h =
-    \begin{bmatrix}
-    z\sin\theta \\
-    -z\cos\theta - g
-    \end{bmatrix}.
-    \]
+    Donc \(\ddot h\) dépend seulement de \(\theta\), de \(z\), et des constantes \(M\) et \(g\).
+    Je garde \(M\) dans les formules pour rester cohérent avec la suite, même si numériquement \(M=1\).
     """)
-    return
-
-
-@app.cell
-def _(M, g, l, np):
-    ## derive premiere de h
-    def dh(x, dx, y, dy, theta, dtheta):
-        dh_x = dx - (l / 6) * np.cos(theta) * dtheta
-
-        dh_y = dy - (l / 6) * np.sin(theta) * dtheta
-        return np.array([dh_x, dh_y])
-
-    ## derivée deuxieme de h
-    def d2h(theta, z):
-        d2h_x = (z / M) * np.sin(theta)
-        d2h_y = -(z / M) * np.cos(theta) - g
-        return np.array([d2h_x, d2h_y])
-
     return
 
 
@@ -2450,11 +2582,15 @@ def _(mo):
     \dot z \sin\theta + z\dot\theta\cos\theta
     \right).
     \]
+
     Pour la deuxième composante :
+
     \[
     \ddot h_y = -\frac{z}{M}\cos\theta - g.
     \]
-    Comme \(g\) est constant. Donc :
+
+    Comme \(g\) est constant, sa dérivée est nulle. Donc :
+
     \[
     h_y^{(3)}
     =
@@ -2463,7 +2599,9 @@ def _(mo):
     -\dot z \cos\theta + z\dot\theta\sin\theta
     \right).
     \]
+
     Ainsi :
+
     \[
     h^{(3)}
     =
@@ -2473,17 +2611,21 @@ def _(mo):
     -\dot z \cos\theta + z\dot\theta\sin\theta
     \end{bmatrix}.
     \]
+
     Ensuite, on dérive encore une fois pour obtenir \(h^{(4)}\).
     On utilise :
+
     \[
-    \ddot z = v_1.
+    \ddot z = v_1
     \]
-    Avec le système auxiliaire, on obtient aussi :
+
+    et, avec le système auxiliaire :
+
     \[
     \ddot\theta = \frac{v_2}{z}.
     \]
 
-    Après dérivation et simplification, on obtient :
+    Après simplification, on obtient :
 
     \[
     h^{(4)}
@@ -2499,7 +2641,9 @@ def _(mo):
     (v_2 + 2\dot z\dot\theta)\sin\theta
     \end{bmatrix}.
     \]
-    Ou bien :
+
+    On peut aussi écrire cette expression sous forme matricielle :
+
     \[
     h^{(4)}
     =
@@ -2513,29 +2657,10 @@ def _(mo):
     v_2 + 2\dot z\dot\theta
     \end{bmatrix}.
     \]
+
+    Cette écriture est utile parce qu'on voit clairement que les commandes \(v_1\) et \(v_2\) apparaissent dans la quatrième dérivée de \(h\).
+    Donc, à l'étape suivante, on pourra choisir \(v_1\) et \(v_2\) pour imposer directement \(h^{(4)} = u\).
     """)
-    return
-
-
-@app.cell
-def _(M, np):
-    # troisième dérivee de h
-    def d3h(theta, dtheta, z, dz):
-        d3h_x = (dz * np.sin(theta) + z * dtheta * np.cos(theta)) / M
-        d3h_y = (-dz * np.cos(theta) + z * dtheta * np.sin(theta)) / M
-        return np.array([d3h_x, d3h_y])
-
-
-    # Quatrième dérivée de h 
-    def d4h(theta, dtheta, z, dz, v1, v2):
-        a = v1 - z * dtheta**2
-        b = v2 + 2 * dz * dtheta
-
-        d4h_x = (a * np.sin(theta) + b * np.cos(theta)) / M
-        d4h_y = (-a * np.cos(theta) + b * np.sin(theta)) / M
-
-        return np.array([d4h_x, d4h_y])
-
     return
 
 
@@ -2556,11 +2681,180 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
+    ### Réponse
+
+    À l'étape précédente, on a obtenu :
+
+    \[
+    h^{(4)}
+    =
+    \frac{1}{M}
+    R\left(\theta-\frac{\pi}{2}\right)
+    \begin{bmatrix}
+    v_1 - z\dot\theta^2 \\
+    v_2 + 2\dot z\dot\theta
+    \end{bmatrix}.
+    \]
+
+    On veut choisir \(v_1\) et \(v_2\) pour imposer directement :
+
+    \[
+    h^{(4)} = u
+    \]
+
+    avec
+
+    \[
+    u =
+    \begin{bmatrix}
+    u_1\\
+    u_2
+    \end{bmatrix}.
+    \]
+
+    Donc il faut que :
+
+    \[
+    \frac{1}{M}
+    R\left(\theta-\frac{\pi}{2}\right)
+    \begin{bmatrix}
+    v_1 - z\dot\theta^2 \\
+    v_2 + 2\dot z\dot\theta
+    \end{bmatrix}
+    =
+    u.
+    \]
+
+    On multiplie alors par \(M\), puis par l'inverse de la matrice de rotation :
+
+    \[
+    \begin{bmatrix}
+    v_1 - z\dot\theta^2 \\
+    v_2 + 2\dot z\dot\theta
+    \end{bmatrix}
+    =
+    M
+    R\left(\theta-\frac{\pi}{2}\right)^{-1}
+    u.
+    \]
+
+    Comme \(R\) est une matrice de rotation, son inverse est simplement :
+
+    \[
+    R\left(\theta-\frac{\pi}{2}\right)^{-1}
+    =
+    R\left(-\theta+\frac{\pi}{2}\right).
+    \]
+
+    En développant cette matrice, on obtient :
+
+    \[
+    R\left(\theta-\frac{\pi}{2}\right)^{-1}
+    =
+    \begin{bmatrix}
+    \sin\theta & -\cos\theta \\
+    \cos\theta & \sin\theta
+    \end{bmatrix}.
+    \]
+
+    Donc :
+
+    \[
+    \begin{bmatrix}
+    v_1 - z\dot\theta^2 \\
+    v_2 + 2\dot z\dot\theta
+    \end{bmatrix}
+    =
+    M
+    \begin{bmatrix}
+    \sin\theta & -\cos\theta \\
+    \cos\theta & \sin\theta
+    \end{bmatrix}
+    \begin{bmatrix}
+    u_1\\
+    u_2
+    \end{bmatrix}.
+    \]
+
+    On obtient alors :
+
+    \[
+    v_1
+    =
+    z\dot\theta^2
+    +
+    M(\sin\theta\,u_1-\cos\theta\,u_2),
+    \]
+
+    \[
+    v_2
+    =
+    -2\dot z\dot\theta
+    +
+    M(\cos\theta\,u_1+\sin\theta\,u_2).
+    \]
+
+    Avec ce choix de \(v_1\) et \(v_2\), les termes compliqués se compensent et il reste bien :
+
+    \[
+    h^{(4)} = u.
+    \]
+
+    C'est donc à ce moment-là que la dynamique de la sortie \(h\) devient linéaire.
+    """)
+    return
+
+
+@app.cell
+def _(M, np):
+    def exact_linearizing_v(theta, dtheta, z, dz, u):
+        u1, u2 = u
+
+        v1 = z * dtheta**2 + M * (np.sin(theta) * u1 - np.cos(theta) * u2)
+        v2 = -2 * dz * dtheta + M * (np.cos(theta) * u1 + np.sin(theta) * u2)
+
+        return np.array([v1, v2])
+
+    return (exact_linearizing_v,)
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
     ## 🧩 State to Derivatives of the Output
 
     Implement a function `Tr` of `x, dx, y, dy, theta, dtheta, z, dz` that returns `h_x, h_y, dh_x, dh_y, d2h_x, d2h_y, d3h_x, d3h_y`.
     """)
     return
+
+
+@app.cell
+def _(M, g, l, np):
+    def Tr(x, dx, y, dy, theta, dtheta, z, dz):
+        # h
+        hx = x - (l / 6) * np.sin(theta)
+        hy = y + (l / 6) * np.cos(theta)
+
+        # h'
+        dhx = dx - (l / 6) * np.cos(theta) * dtheta
+        dhy = dy - (l / 6) * np.sin(theta) * dtheta
+
+        # h''
+        d2hx = (z / M) * np.sin(theta)
+        d2hy = -(z / M) * np.cos(theta) - g
+
+        # h'''
+        d3hx = (dz * np.sin(theta) + z * dtheta * np.cos(theta)) / M
+        d3hy = (-dz * np.cos(theta) + z * dtheta * np.sin(theta)) / M
+
+        return np.array([
+            hx, hy,
+            dhx, dhy,
+            d2hx, d2hy,
+            d3hx, d3hy,
+        ])
+
+    return (Tr,)
 
 
 @app.cell(hide_code=True)
@@ -2574,6 +2868,135 @@ def _(mo):
     Implement the corresponding function `T_inv`.
     """)
     return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ### Réponse
+
+    On veut maintenant faire l'inverse de la fonction `Tr`.
+    On suppose qu'on a :
+    \[
+    h,\quad \dot h,\quad \ddot h,\quad h^{(3)}.
+    \]
+    On veut retrouver :
+    \[
+    x,\dot{x},y,\dot{y},\theta,\dot{\theta},z,\dot z.
+    \]
+
+    On utilise d'abord la formule de \(\ddot h\) :
+    \[
+    \ddot h =
+    \begin{bmatrix}
+    \frac{z}{M}\sin\theta \\
+    -\frac{z}{M}\cos\theta - g
+    \end{bmatrix}.
+    \]
+
+    On pose :
+
+    \[
+    a =
+    \begin{bmatrix}
+    \ddot h_x \\
+    \ddot h_y + g
+    \end{bmatrix}.
+    \]
+
+    Alors :
+
+    \[
+    a =
+    \frac{z}{M}
+    \begin{bmatrix}
+    \sin\theta \\
+    -\cos\theta
+    \end{bmatrix}.
+    \]
+
+    Comme on suppose \(z<0\), on peut retrouver \(z\) sans ambiguïté :
+
+    \[
+    z = -M\|a\|.
+    \]
+
+    Ensuite, on retrouve l'angle \(\theta\) avec la direction de \(a\) :
+
+    \[
+    \theta = \operatorname{atan2}(-a_x,a_y).
+    \]
+    Une fois \(\theta\) et \(z\) connus, on utilise \(h^{(3)}\) pour retrouver \(\dot z\) et \(\dot\theta\).
+    On a :
+    \[
+    M h^{(3)}
+    =
+    \dot z
+    \begin{bmatrix}
+    \sin\theta \\
+    -\cos\theta
+    \end{bmatrix}
+    +
+    z\dot\theta
+    \begin{bmatrix}
+    \cos\theta \\
+    \sin\theta
+    \end{bmatrix}.
+    \]
+
+    Les deux vecteurs sont orthogonaux, donc on peut projeter dessus pour obtenir \(\dot z\) et \(\dot\theta\).
+
+    Enfin, quand \(\theta\) et \(\dot\theta\) sont connus, on retrouve \(x,y,\dot x,\dot y\) avec les formules de \(h\) et \(\dot h\).
+    """)
+    return
+
+
+@app.cell
+def _(M, g, l, np):
+    def T_inv(hx, hy, dhx, dhy, d2hx, d2hy, d3hx, d3hy):
+
+
+        # On reconstruit a à partir de h''
+        a = np.array([d2hx, d2hy + g])
+        a_norm = np.linalg.norm(a)
+
+        if a_norm < 1e-12:
+            raise ValueError("Impossible d'inverser : a est trop proche de zéro.")
+
+        # Comme on suppose z < 0
+        z = -M * a_norm
+
+        # Direction de l'axe du booster
+        theta = np.arctan2(-a[0], a[1])
+
+        sin_theta = np.sin(theta)
+        cos_theta = np.cos(theta)  
+
+        #  dz et dtheta à partir de h'''
+        h3 = M * np.array([d3hx, d3hy])
+
+        b1 = np.array([sin_theta, -cos_theta])
+        b2 = np.array([cos_theta, sin_theta])
+
+        dz = h3 @ b1
+        dtheta = (h3 @ b2) / z
+
+        #  x et y à partir de h
+        x = hx + (l / 6) * sin_theta
+        y = hy - (l / 6) * cos_theta
+
+        #  dx et dy à partir de dh
+        dx = dhx + (l / 6) * cos_theta * dtheta
+        dy = dhy + (l / 6) * sin_theta * dtheta
+
+        return np.array([
+            x, dx,
+            y, dy,
+            theta, dtheta,
+            z, dz,
+        ])
+
+    return (T_inv,)
 
 
 @app.cell(hide_code=True)
@@ -2615,6 +3038,218 @@ def _(mo):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
+    ### Réponse
+
+    On veut construire une trajectoire admissible entre un état initial et un état final.
+
+    Grâce à la linéarisation exacte, on ne travaille pas directement avec les variables physiques
+
+    \[
+    x,\dot{x},y,\dot{y},\theta,\dot{\theta},z,\dot z.
+    \]
+
+    On les transforme d'abord avec `Tr` pour obtenir :
+
+    \[
+    h,\quad \dot h,\quad \ddot h,\quad h^{(3)}.
+    \]
+
+    Comme la dynamique obtenue est :
+
+    \[
+    h^{(4)} = u,
+    \]
+
+    on peut choisir séparément une trajectoire polynomiale pour \(h_x(t)\) et \(h_y(t)\).
+
+    Pour respecter les conditions initiales et finales sur :
+
+    \[
+    h,\quad \dot h,\quad \ddot h,\quad h^{(3)},
+    \]
+
+    on utilise un polynôme de degré 7.
+    C'est logique, car on a 8 contraintes : 4 au début et 4 à la fin.
+
+    Ensuite, pour chaque instant \(t\), on calcule :
+
+    \[
+    h(t),\dot h(t),\ddot h(t),h^{(3)}(t),h^{(4)}(t).
+    \]
+
+    Puis on utilise `T_inv` pour retrouver :
+
+    \[
+    x,\dot{x},y,\dot{y},\theta,\dot{\theta},z,\dot z.
+    \]
+
+    Enfin, avec \(h^{(4)}\), on calcule les commandes auxiliaires, puis la force réelle du booster, c'est-à-dire \(f\) et \(\phi\).
+    Conclusion : la fonction "compute" construit une trajectoire complète qui respecte les états initial et final donnés.
+    """)
+    return
+
+
+@app.cell
+def _(M, T_inv, Tr, exact_linearizing_v, l, np):
+    def compute(
+        x_0,
+        dx_0,
+        y_0,
+        dy_0,
+        theta_0,
+        dtheta_0,
+        z_0,
+        dz_0,
+        x_tf,
+        dx_tf,
+        y_tf,
+        dy_tf,
+        theta_tf,
+        dtheta_tf,
+        z_tf,
+        dz_tf,
+        tf,
+    ):
+        # Transformation des états initial et final vers les dérivées de h
+        tr_0 = Tr(x_0, dx_0, y_0, dy_0, theta_0, dtheta_0, z_0, dz_0)
+        tr_f = Tr(x_tf, dx_tf, y_tf, dy_tf, theta_tf, dtheta_tf, z_tf, dz_tf)
+
+        # Pour hx : [hx, dhx, d2hx, d3hx]
+        hx_0 = tr_0[[0, 2, 4, 6]]
+        hx_f = tr_f[[0, 2, 4, 6]]
+
+        # Pour hy : [hy, dhy, d2hy, d3hy]
+        hy_0 = tr_0[[1, 3, 5, 7]]
+        hy_f = tr_f[[1, 3, 5, 7]]
+
+        def polynomial_coeffs(jet_0, jet_f, tf):
+
+            ##Calcule les coefficients d'un polynôme de degré 7.
+            ##Le polynôme respecte p, p', p'', p''' au temps 0 et au temps tf.
+
+            A_poly = np.zeros((8, 8))
+            b_poly = np.zeros(8)
+
+            # Contraintes en t = 0
+            # p(0)
+            A_poly[0, 0] = 1.0
+            b_poly[0] = jet_0[0]
+
+            # p'(0)
+            A_poly[1, 1] = 1.0
+            b_poly[1] = jet_0[1]
+
+            # p''(0)
+            A_poly[2, 2] = 2.0
+            b_poly[2] = jet_0[2]
+
+            # p'''(0)
+            A_poly[3, 3] = 6.0
+            b_poly[3] = jet_0[3]
+
+            # Contraintes en t = tf
+            for k in range(8):
+                A_poly[4, k] = tf**k
+
+                if k >= 1:
+                    A_poly[5, k] = k * tf**(k - 1)
+
+                if k >= 2:
+                    A_poly[6, k] = k * (k - 1) * tf**(k - 2)
+
+                if k >= 3:
+                    A_poly[7, k] = k * (k - 1) * (k - 2) * tf**(k - 3)
+
+            b_poly[4] = jet_f[0]
+            b_poly[5] = jet_f[1]
+            b_poly[6] = jet_f[2]
+            b_poly[7] = jet_f[3]
+
+            return np.linalg.solve(A_poly, b_poly)
+
+        def eval_poly(coeffs, t, order):
+    ##Évalue la dérivée d'ordre `order` du polynôme.
+            value = 0.0
+
+            for k, a_k in enumerate(coeffs):
+                if k >= order:
+                    factor = 1.0
+                    for j in range(order):
+                        factor *= k - j
+
+                    value += a_k * factor * t**(k - order)
+
+            return value
+
+        coeffs_hx = polynomial_coeffs(hx_0, hx_f, tf)
+        coeffs_hy = polynomial_coeffs(hy_0, hy_f, tf)
+
+        def R_matrix(alpha):
+            return np.array([
+                [np.cos(alpha), -np.sin(alpha)],
+                [np.sin(alpha), np.cos(alpha)],
+            ])
+
+        def one_time(t):
+            # h et ses dérivées jusqu'à l'ordre 4
+            hx = eval_poly(coeffs_hx, t, 0)
+            dhx = eval_poly(coeffs_hx, t, 1)
+            d2hx = eval_poly(coeffs_hx, t, 2)
+            d3hx = eval_poly(coeffs_hx, t, 3)
+            d4hx = eval_poly(coeffs_hx, t, 4)
+
+            hy = eval_poly(coeffs_hy, t, 0)
+            dhy = eval_poly(coeffs_hy, t, 1)
+            d2hy = eval_poly(coeffs_hy, t, 2)
+            d3hy = eval_poly(coeffs_hy, t, 3)
+            d4hy = eval_poly(coeffs_hy, t, 4)
+
+            # Retour vers les variables physiques
+            state = T_inv(hx, hy, dhx, dhy, d2hx, d2hy, d3hx, d3hy)
+
+            x, dx, y, dy, theta, dtheta, z, dz = state
+
+            # Ici u = h^(4)
+            u = np.array([d4hx, d4hy])
+
+            # Calcul de v = [v1, v2]
+            v1, v2 = exact_linearizing_v(theta, dtheta, z, dz, u)
+
+            # Force cartésienne donnée par le système auxiliaire
+            force_local = np.array([
+                z - M * l * dtheta**2 / 6,
+                M * l * v2 / (6 * z),
+            ])
+
+            fx, fy = R_matrix(theta - np.pi / 2) @ force_local
+
+            # Conversion de (fx, fy) vers (f, phi)
+            f = np.sqrt(fx**2 + fy**2)
+            phi = np.arctan2(-fx, fy) - theta
+
+            return np.array([
+                x, dx, y, dy, theta, dtheta, z, dz, f, phi,
+            ])
+
+        def fun(t):
+            t_array = np.asarray(t)
+
+            if t_array.ndim == 0:
+                return one_time(float(t_array))
+
+            return np.column_stack([
+                one_time(float(t_i))
+                for t_i in t_array
+            ])
+
+        return fun
+
+    return (compute,)
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
     ## 🧩 Graphical Validation
 
     Test your `compute` function with
@@ -2624,6 +3259,271 @@ def _(mo):
     - `tf = 10.0`.
 
     Make the graph of the relevant variables as a function of time, then make an animation out of the same result. Comment and iterate if necessary!
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ### Réponse
+
+    On teste maintenant la trajectoire calculée par `compute`.
+
+    D'après ces données , l'idée est de partir d'un état initial où le booster est incliné et décalé horizontalement :
+
+    \[
+    x_0 = 5,\qquad y_0 = 20,\qquad \theta_0 = -\frac{\pi}{8}.
+    \]
+
+    On veut arriver à un état final où le booster est proche de la cible, vertical et au repos :
+
+    \[
+    x_f = 0,\qquad y_f = \frac{2\ell}{3},\qquad \theta_f = 0.
+    \]
+
+    La fonction `compute` construit une trajectoire pour la sortie \(h\), puis utilise `T_inv` pour retrouver les vraies variables du booster :
+
+    \[
+    x,\dot{x},y,\dot{y},\theta,\dot{\theta},z,\dot z.
+    \]
+
+    On vérifie ensuite les graphes de \(x(t)\), \(y(t)\), \(\theta(t)\), \(f(t)\) et \(\phi(t)\), puis on affiche une animation du mouvement.
+    """)
+    return
+
+
+@app.cell
+def _(M, booster_anim, compute, g, l, mo, np, plt, world):
+    gv_fun = compute(
+        5.0,
+        0.0,
+        20.0,
+        -1.0,
+        -np.pi / 8,
+        0.0,
+        -M * g,
+        0.0,
+        0.0,
+        0.0,
+        2 * l / 3,
+        0.0,
+        0.0,
+        0.0,
+        -M * g,
+        0.0,
+        10.0,
+    )
+
+    gv_tf = 10.0
+    gv_time = np.linspace(0.0, gv_tf, 1000)
+    gv_values = gv_fun(gv_time)
+
+    gv_x = gv_values[0]
+    gv_dx = gv_values[1]
+    gv_y = gv_values[2]
+    gv_dy = gv_values[3]
+    gv_theta = gv_values[4]
+    gv_dtheta = gv_values[5]
+    gv_z = gv_values[6]
+    gv_dz = gv_values[7]
+    gv_f = gv_values[8]
+    gv_phi = gv_values[9]
+
+    print("Initial value:")
+    print(gv_fun(0.0))
+
+    print("Final value:")
+    print(gv_fun(gv_tf))
+
+    print("Max |phi| =", np.max(np.abs(gv_phi)))
+    print("Min f =", np.min(gv_f))
+    print("Max f =", np.max(gv_f))
+    print("Min z =", np.min(gv_z))
+
+
+    # Graphe 1 : position
+    plt.figure(figsize=(8, 4))
+    plt.plot(gv_time, gv_x, label=r"$x(t)$")
+    plt.plot(gv_time, gv_y, label=r"$y(t)$")
+    plt.axhline(0, color="black", linestyle=":", linewidth=1)
+    plt.axhline(
+        2 * l / 3,
+        color="grey",
+        linestyle="--",
+        linewidth=1,
+        label=r"$y_f=2\ell/3$",
+    )
+    plt.xlabel("time t")
+    plt.title("Exact linearization — position")
+    plt.grid(True, alpha=0.3)
+    plt.legend()
+    plt.show()
+
+
+    # Graphe 2 : vitesses
+    plt.figure(figsize=(8, 4))
+    plt.plot(gv_time, gv_dx, label=r"$\dot{x}(t)$")
+    plt.plot(gv_time, gv_dy, label=r"$\dot{y}(t)$")
+    plt.axhline(0, color="black", linestyle=":", linewidth=1)
+    plt.xlabel("time t")
+    plt.title("Exact linearization — velocities")
+    plt.grid(True, alpha=0.3)
+    plt.legend()
+    plt.show()
+
+
+    # Graphe 3 : angle
+    plt.figure(figsize=(8, 4))
+    plt.plot(gv_time, gv_theta, label=r"$\theta(t)$")
+    plt.plot(gv_time, gv_dtheta, label=r"$\dot{\theta}(t)$")
+    plt.axhline(0, color="black", linestyle=":", linewidth=1)
+    plt.axhline(
+        np.pi / 2, color="red", linestyle="--", linewidth=1, label=r"$\pm\pi/2$"
+    )
+    plt.axhline(-np.pi / 2, color="red", linestyle="--", linewidth=1)
+    plt.xlabel("time t")
+    plt.title("Exact linearization — angle")
+    plt.grid(True, alpha=0.3)
+    plt.legend()
+    plt.show()
+
+
+    # Graphe 4 : z
+    plt.figure(figsize=(8, 4))
+    plt.plot(gv_time, gv_z, label=r"$z(t)$")
+    plt.axhline(0, color="red", linestyle="--", linewidth=1, label=r"$z=0$")
+    plt.xlabel("time t")
+    plt.title("Auxiliary variable z")
+    plt.grid(True, alpha=0.3)
+    plt.legend()
+    plt.show()
+
+
+    # Graphe 5 : commandes f et phi
+    plt.figure(figsize=(8, 4))
+    plt.plot(gv_time, gv_f, label=r"$f(t)$")
+    plt.xlabel("time t")
+    plt.title("Force amplitude")
+    plt.grid(True, alpha=0.3)
+    plt.legend()
+    plt.show()
+
+    plt.figure(figsize=(8, 4))
+    plt.plot(gv_time, gv_phi, label=r"$\phi(t)$")
+    plt.axhline(
+        np.pi / 2, color="red", linestyle="--", linewidth=1, label=r"$\pm\pi/2$"
+    )
+    plt.axhline(-np.pi / 2, color="red", linestyle="--", linewidth=1)
+    plt.xlabel("time t")
+    plt.title("Engine angle")
+    plt.grid(True, alpha=0.3)
+    plt.legend()
+    plt.show()
+
+
+    # Animation
+    def gv_x_fun(t):
+        return gv_fun(t)[0]
+
+
+    def gv_y_fun(t):
+        return gv_fun(t)[2]
+
+
+    def gv_theta_fun(t):
+        return gv_fun(t)[4]
+
+
+    def gv_f_fun(t):
+        return gv_fun(t)[8]
+
+
+    def gv_phi_fun(t):
+        return gv_fun(t)[9]
+
+
+    mo.Html(
+        world(
+            [-2, 7, -2, 22],
+            booster_anim(
+                gv_x_fun,
+                gv_y_fun,
+                gv_theta_fun,
+                gv_f_fun,
+                gv_phi_fun,
+                T=gv_tf,
+            ),
+        )
+    ).center()
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ### Observation
+
+    Les valeurs imprimées montrent que la trajectoire respecte bien les conditions imposées.
+
+    Au temps initial, on obtient :
+
+    \[
+    x(0) \approx 5,\quad \dot{x}(0) \approx 0,
+    \]
+
+    \[
+    y(0) = 20,\quad \dot{y}(0) = -1,
+    \]
+
+    \[
+    \theta(0) \approx -0.3927 = -\frac{\pi}{8},\quad \dot{\theta}(0) \approx 0.
+    \]
+
+    Les très petites valeurs autour de \(10^{-16}\) sont simplement des erreurs numériques. On peut donc les considérer comme zéro.
+
+    Au temps final, on obtient :
+
+    \[
+    x(t_f) \approx 0,\quad \dot{x}(t_f) \approx 0,
+    \]
+
+    \[
+    y(t_f) = 1.3333 = \frac{2\ell}{3},
+    \quad \dot{y}(t_f) \approx 0,
+    \]
+
+    \[
+    \theta(t_f) \approx 0,\quad \dot{\theta}(t_f) \approx 0.
+    \]
+
+    Donc le booster arrive bien à la position demandée, vertical et pratiquement au repos.
+
+    La variable auxiliaire vérifie aussi :
+
+    \[
+    z(0)=-Mg=-1,\qquad z(t_f)=-Mg=-1.
+    \]
+
+    Sur le graphe, il faut surtout vérifier que \(z(t)\) reste toujours négatif, car l'inversion `T_inv` suppose \(z<0\). Ici, cette condition est respectée.
+
+    On remarque aussi que l'angle \(\theta(t)\) peut devenir assez grand pendant la trajectoire et se rapprocher de \(\pi/2\). Ce n'est pas forcément une erreur : la trajectoire polynomiale respecte les conditions initiales et finales, mais elle n'est pas optimisée pour minimiser l'inclinaison maximale. Comme le temps final est seulement \(10\) secondes, le booster doit revenir vers la cible assez rapidement, ce qui peut demander une inclinaison importante au milieu du mouvement.
+
+    Les deux dernières valeurs affichées correspondent aux commandes \(f\) et \(\phi\).
+    Au début et à la fin, elles restent raisonnables :
+
+    \[
+    f(0)\approx 1.011,\quad \phi(0)\approx -0.146,
+    \]
+
+    \[
+    f(t_f)\approx 1.024,\quad \phi(t_f)\approx 0.217.
+    \]
+
+    Sur les graphes, \(x(t)\) revient vers la cible, \(y(t)\) descend vers la hauteur finale, et \(\theta(t)\) revient vers 0.
+    L'animation doit donc montrer un booster qui part incliné et décalé à droite, puis descend vers la cible en se redressant progressivement.
+
+    Conclusion : la trajectoire calculée par `compute` respecte bien les conditions initiales et finales. Les petites différences autour de \(10^{-14}\) ou \(10^{-16}\) viennent seulement de la précision numérique.
     """)
     return
 
