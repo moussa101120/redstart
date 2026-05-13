@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.23.5"
+__generated_with = "0.20.4"
 app = marimo.App()
 
 
@@ -2875,17 +2875,26 @@ def _(mo):
     mo.md(r"""
     ### Réponse
 
-    On veut maintenant faire l'inverse de la fonction `Tr`.
-    On suppose qu'on a :
+    On veut faire l'opération inverse de `Tr`.
+
+    La fonction `Tr` part de l'état physique et auxiliaire :
     \[
-    h,\quad \dot h,\quad \ddot h,\quad h^{(3)}.
+    x,\dot{x},y,\dot{y},\theta,\dot{\theta},z,\dot z
     \]
-    On veut retrouver :
+    et calcule :
+    \[
+    h,\dot h,\ddot h,h^{(3)}.
+    \]
+    Ici, on veut faire l'inverse : à partir de
+    \[
+    h,\dot h,\ddot h,h^{(3)},
+    \]
+    on veut retrouver :
     \[
     x,\dot{x},y,\dot{y},\theta,\dot{\theta},z,\dot z.
     \]
 
-    On utilise d'abord la formule de \(\ddot h\) :
+    On commence avec la formule de \(\ddot h\) :
     \[
     \ddot h =
     \begin{bmatrix}
@@ -2893,9 +2902,7 @@ def _(mo):
     -\frac{z}{M}\cos\theta - g
     \end{bmatrix}.
     \]
-
-    On pose :
-
+    On isole la partie qui ne contient pas la gravité en posant :
     \[
     a =
     \begin{bmatrix}
@@ -2915,19 +2922,74 @@ def _(mo):
     \end{bmatrix}.
     \]
 
-    Comme on suppose \(z<0\), on peut retrouver \(z\) sans ambiguïté :
+    Le vecteur
+    \[
+    b_1 =
+    \begin{bmatrix}
+    \sin\theta \\
+    -\cos\theta
+    \end{bmatrix}
+    \]
+    est un vecteur unitaire, car :
+    \[
+    \|b_1\| =
+    \sqrt{\sin^2\theta+\cos^2\theta}
+    =1.
+    \]
+    Donc :
+    \[
+    \|a\| =
+    \left|\frac{z}{M}\right|.
+    \]
 
+    Comme on suppose dans l'énoncé que \(z<0\), on choisit le signe négatif :
     \[
     z = -M\|a\|.
     \]
+    C'est pour cela que l'hypothèse \(z<0\) est importante : sans elle, on ne saurait pas choisir entre \(z\) et \(-z\).
 
-    Ensuite, on retrouve l'angle \(\theta\) avec la direction de \(a\) :
 
+    Ensuite, on retrouve \(\theta\).
+
+    On sait que :
+    \[
+    a =
+    \frac{z}{M}
+    \begin{bmatrix}
+    \sin\theta \\
+    -\cos\theta
+    \end{bmatrix}.
+    \]
+    Comme \(z<0\), le vecteur \(a\) est dans la direction opposée à
+    \[
+    \begin{bmatrix}
+    \sin\theta \\
+    -\cos\theta
+    \end{bmatrix}.
+    \]
+    Dans le code, on utilise directement la relation :
     \[
     \theta = \operatorname{atan2}(-a_x,a_y).
     \]
-    Une fois \(\theta\) et \(z\) connus, on utilise \(h^{(3)}\) pour retrouver \(\dot z\) et \(\dot\theta\).
-    On a :
+    Cela permet de retrouver l'angle avec le bon quadrant.
+
+
+    Une fois \(z\) et \(\theta\) connus, il reste à retrouver \(\dot z\) et \(\dot\theta\).
+
+    On utilise la formule de \(h^{(3)}\) :
+
+    \[
+    h^{(3)}
+    =
+    \frac{1}{M}
+    \begin{bmatrix}
+    \dot z \sin\theta + z\dot\theta\cos\theta \\
+    -\dot z \cos\theta + z\dot\theta\sin\theta
+    \end{bmatrix}.
+    \]
+
+    On la réécrit sous la forme :
+
     \[
     M h^{(3)}
     =
@@ -2944,9 +3006,106 @@ def _(mo):
     \end{bmatrix}.
     \]
 
-    Les deux vecteurs sont orthogonaux, donc on peut projeter dessus pour obtenir \(\dot z\) et \(\dot\theta\).
+    On pose :
 
-    Enfin, quand \(\theta\) et \(\dot\theta\) sont connus, on retrouve \(x,y,\dot x,\dot y\) avec les formules de \(h\) et \(\dot h\).
+    \[
+    b_1 =
+    \begin{bmatrix}
+    \sin\theta \\
+    -\cos\theta
+    \end{bmatrix},
+    \qquad
+    b_2 =
+    \begin{bmatrix}
+    \cos\theta \\
+    \sin\theta
+    \end{bmatrix}.
+    \]
+
+    Ces deux vecteurs sont orthogonaux, car :
+
+    \[
+    b_1 \cdot b_2
+    =
+    \sin\theta\cos\theta
+    -
+    \cos\theta\sin\theta
+    =0.
+    \]
+
+    Ils sont aussi unitaires. Donc ils forment une base orthonormée.
+
+    Ainsi, pour retrouver \(\dot z\), on projette \(M h^{(3)}\) sur \(b_1\) :
+
+    \[
+    \dot z = M h^{(3)} \cdot b_1.
+    \]
+
+    Et pour retrouver \(z\dot\theta\), on projette \(M h^{(3)}\) sur \(b_2\) :
+
+    \[
+    z\dot\theta = M h^{(3)} \cdot b_2.
+    \]
+
+    Comme on connaît déjà \(z\), on obtient :
+
+    \[
+    \dot\theta =
+    \frac{M h^{(3)} \cdot b_2}{z}.
+    \]
+
+
+    Il reste maintenant à retrouver \(x,y,\dot x,\dot y\).
+
+    On repart de la définition de \(h\) :
+
+    \[
+    h_x = x - \frac{\ell}{6}\sin\theta,
+    \qquad
+    h_y = y + \frac{\ell}{6}\cos\theta.
+    \]
+
+    Donc :
+
+    \[
+    x = h_x + \frac{\ell}{6}\sin\theta,
+    \]
+
+    \[
+    y = h_y - \frac{\ell}{6}\cos\theta.
+    \]
+
+    Puis on utilise la formule de \(\dot h\) :
+
+    \[
+    \dot h_x =
+    \dot x - \frac{\ell}{6}\cos\theta\dot\theta,
+    \]
+
+    \[
+    \dot h_y =
+    \dot y - \frac{\ell}{6}\sin\theta\dot\theta.
+    \]
+
+    Donc :
+
+    \[
+    \dot x =
+    \dot h_x + \frac{\ell}{6}\cos\theta\dot\theta,
+    \]
+
+    \[
+    \dot y =
+    \dot h_y + \frac{\ell}{6}\sin\theta\dot\theta.
+    \]
+
+    Finalement, on a bien retrouvé toutes les variables :
+
+    \[
+    x,\dot{x},y,\dot{y},\theta,\dot{\theta},z,\dot z.
+    \]
+
+    C'est exactement ce que fait la fonction `T_inv`.
     """)
     return
 
@@ -3123,10 +3282,10 @@ def _(M, T_inv, Tr, exact_linearizing_v, l, np):
         hy_f = tr_f[[1, 3, 5, 7]]
 
         def polynomial_coeffs(jet_0, jet_f, tf):
-
+     
             ##Calcule les coefficients d'un polynôme de degré 7.
             ##Le polynôme respecte p, p', p'', p''' au temps 0 et au temps tf.
-
+    
             A_poly = np.zeros((8, 8))
             b_poly = np.zeros(8)
 
@@ -3296,22 +3455,8 @@ def _(mo):
 @app.cell
 def _(M, booster_anim, compute, g, l, mo, np, plt, world):
     gv_fun = compute(
-        5.0,
-        0.0,
-        20.0,
-        -1.0,
-        -np.pi / 8,
-        0.0,
-        -M * g,
-        0.0,
-        0.0,
-        0.0,
-        2 * l / 3,
-        0.0,
-        0.0,
-        0.0,
-        -M * g,
-        0.0,
+        5.0, 0.0, 20.0, -1.0, -np.pi / 8, 0.0, -M * g, 0.0,
+        0.0, 0.0, 2 * l / 3, 0.0, 0.0, 0.0, -M * g, 0.0,
         10.0,
     )
 
@@ -3347,13 +3492,7 @@ def _(M, booster_anim, compute, g, l, mo, np, plt, world):
     plt.plot(gv_time, gv_x, label=r"$x(t)$")
     plt.plot(gv_time, gv_y, label=r"$y(t)$")
     plt.axhline(0, color="black", linestyle=":", linewidth=1)
-    plt.axhline(
-        2 * l / 3,
-        color="grey",
-        linestyle="--",
-        linewidth=1,
-        label=r"$y_f=2\ell/3$",
-    )
+    plt.axhline(2 * l / 3, color="grey", linestyle="--", linewidth=1, label=r"$y_f=2\ell/3$")
     plt.xlabel("time t")
     plt.title("Exact linearization — position")
     plt.grid(True, alpha=0.3)
@@ -3378,9 +3517,7 @@ def _(M, booster_anim, compute, g, l, mo, np, plt, world):
     plt.plot(gv_time, gv_theta, label=r"$\theta(t)$")
     plt.plot(gv_time, gv_dtheta, label=r"$\dot{\theta}(t)$")
     plt.axhline(0, color="black", linestyle=":", linewidth=1)
-    plt.axhline(
-        np.pi / 2, color="red", linestyle="--", linewidth=1, label=r"$\pm\pi/2$"
-    )
+    plt.axhline(np.pi / 2, color="red", linestyle="--", linewidth=1, label=r"$\pm\pi/2$")
     plt.axhline(-np.pi / 2, color="red", linestyle="--", linewidth=1)
     plt.xlabel("time t")
     plt.title("Exact linearization — angle")
@@ -3411,9 +3548,7 @@ def _(M, booster_anim, compute, g, l, mo, np, plt, world):
 
     plt.figure(figsize=(8, 4))
     plt.plot(gv_time, gv_phi, label=r"$\phi(t)$")
-    plt.axhline(
-        np.pi / 2, color="red", linestyle="--", linewidth=1, label=r"$\pm\pi/2$"
-    )
+    plt.axhline(np.pi / 2, color="red", linestyle="--", linewidth=1, label=r"$\pm\pi/2$")
     plt.axhline(-np.pi / 2, color="red", linestyle="--", linewidth=1)
     plt.xlabel("time t")
     plt.title("Engine angle")
@@ -3426,22 +3561,17 @@ def _(M, booster_anim, compute, g, l, mo, np, plt, world):
     def gv_x_fun(t):
         return gv_fun(t)[0]
 
-
     def gv_y_fun(t):
         return gv_fun(t)[2]
-
 
     def gv_theta_fun(t):
         return gv_fun(t)[4]
 
-
     def gv_f_fun(t):
         return gv_fun(t)[8]
 
-
     def gv_phi_fun(t):
         return gv_fun(t)[9]
-
 
     mo.Html(
         world(
